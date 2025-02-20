@@ -45,3 +45,7 @@ storage:
           Address=172.20.5.14/16
           Gateway=172.20.0.1
     # - path: .ssh/authorized_keys.d/ignition
+    - path: /etc/systemd/resolved.conf.d/DNS.conf
+      contents:
+        inline: |
+          DNS=172.20.0.1
