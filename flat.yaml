@@ -21,7 +21,7 @@ systemd:
 
         [Service]
         Type=oneshot
-        ExecStart=/bin/systemctl restart restart-systemd-networkd
+        ExecStart=/bin/systemctl restart systemd-networkd
         RemainAfterExit=true
 
         [Install]
