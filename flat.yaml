@@ -48,4 +48,5 @@ storage:
     - path: /etc/systemd/resolved.conf.d/DNS.conf
       contents:
         inline: |
+          [Resolve]
           DNS=172.20.0.1
