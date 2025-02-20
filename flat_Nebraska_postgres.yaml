@@ -1,0 +1,13 @@
+variant: flatcar
+version: 1.0.0
+passwd:
+  users:
+    - name: Nebraska_postgres
+      ssh_authorized_keys:
+        -
+systemd:
+  units:
+    - name: postgres.service
+      enabled: true
+      contents: |
+        [Unit]

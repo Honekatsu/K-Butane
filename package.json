@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "textlint": "^14.4.2",
+    "textlint-rule-preset-jtf-style": "^3.0.1"
+  }
+}
