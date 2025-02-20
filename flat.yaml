@@ -11,6 +11,22 @@ systemd:
   units:
     - name: docker.service
       enabled: true
+    - name: restart-systemd-networkd.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Restart systemd-networkd
+        After=network-online.target
+        Wants=network-online.target
+
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/systemctl restart restart-systemd-networkd
+        RemainAfterExit=true
+
+        [Install]
+        WantedBy=multi-user.target
+
 storage:
   links:
     - path: /etc/systemd/system/multi-user.target.wants/docker.service
@@ -23,7 +39,7 @@ storage:
       contents:
         inline: |
           [Match]
-          Name=enp2s0
+          Name=eth0
 
           [Network]
           Address=172.20.5.14/16
