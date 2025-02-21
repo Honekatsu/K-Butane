@@ -40,6 +40,23 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: node-exporter.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run node-exporter container
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=simple
+        ExecStartPre=-/usr/bin/docker stop node_exporter
+        ExecStartPre=-/usr/bin/docker rm node_exporter
+        ExecStartPre=/usr/bin/docker pull prom/node-exporter
+        ExecStart=/usr/bin/docker run --rm --name node_exp -p9100:9100 prom/node-exporter
+
+        [Install]
+        WantedBy=multi-user.target
 
 storage:
   links:
