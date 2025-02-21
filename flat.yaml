@@ -7,6 +7,7 @@ passwd:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGb+CIf0OxImP83No/vnahM5YFb2Ucb9DXqBYaCvY7yv K-Desktop01
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0LxJ3sUd6GM8a7M6WT4Sw5Pcw7s5hasTbVE8/6CvPH ubu-Ansible
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGEOdiXCp1MbuUfVJR3k4a2EvbgTytjXBoeYH8GytOfv K-MacBookAir m3
+      groups: [sudo, docker]
 systemd:
   units:
     - name: docker.service
