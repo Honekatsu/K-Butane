@@ -26,6 +26,15 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: set-timezone.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=timezone settings
+
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/timedatectl set-timezone Asia/Tokyo
 
 storage:
   links:
@@ -34,7 +43,6 @@ storage:
       hard: false
       overwrite: true
   files:
-    # - path: /etc/systemd/network/50-
     - path: /etc/systemd/network/static.network
       contents:
         inline: |
@@ -44,6 +52,7 @@ storage:
           [Network]
           Address=172.20.5.14/16
           Gateway=172.20.0.1
+          NTP=172.20.0.1
     # - path: .ssh/authorized_keys.d/ignition
     - path: /etc/systemd/resolved.conf.d/DNS.conf
       contents:
