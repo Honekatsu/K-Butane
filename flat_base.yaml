@@ -63,15 +63,6 @@ storage:
       hard: false
       overwrite: true
   files:
-    - path: /etc/systemd/network/static.network
-      contents:
-        inline: |
-          [Match]
-          Name=eth0
-
-          [Network]
-          Gateway=172.20.0.1
-          NTP=172.20.0.1
     - path: /etc/systemd/resolved.conf.d/DNS.conf
       contents:
         inline: |
