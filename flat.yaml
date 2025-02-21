@@ -1,67 +1,10 @@
 variant: flatcar
 version: 1.1.0
-passwd:
-  users:
-    - name: flatcar
-      ssh_authorized_keys_local:
-        - authorized_keys
-      groups: [sudo, docker]
-systemd:
-  units:
-    - name: docker.service
-      enabled: true
-    - name: restart-systemd-networkd.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Restart systemd-networkd
-        After=network-online.target
-        Wants=network-online.target
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        ExecStart=/bin/systemctl restart systemd-networkd
-
-        [Install]
-        WantedBy=multi-user.target
-    - name: set-timezone.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=timezone settings
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        ExecStart=/bin/timedatectl set-timezone Asia/Tokyo
-
-        [Install]
-        WantedBy=multi-user.target
-    - name: node-exporter.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=run node-exporter container
-        Requires=docker.service
-        After=docker.service
-
-        [Service]
-        Type=simple
-        ExecStartPre=-/usr/bin/docker stop node_exporter
-        ExecStartPre=-/usr/bin/docker rm node_exporter
-        ExecStartPre=/usr/bin/docker pull prom/node-exporter
-        ExecStart=/usr/bin/docker run --rm --name node_exp -p9100:9100 prom/node-exporter
-
-        [Install]
-        WantedBy=multi-user.target
-
+ignition:
+  config:
+    merge:
+      - local: flat_base.json
 storage:
-  links:
-    - path: /etc/systemd/system/multi-user.target.wants/docker.service
-      target: /usr/lib/systemd/system/docker.service
-      hard: false
-      overwrite: true
   files:
     - path: /etc/systemd/network/static.network
       contents:
@@ -71,10 +14,3 @@ storage:
 
           [Network]
           Address=172.20.5.14/16
-          Gateway=172.20.0.1
-          NTP=172.20.0.1
-    - path: /etc/systemd/resolved.conf.d/DNS.conf
-      contents:
-        inline: |
-          [Resolve]
-          DNS=172.20.0.1
