@@ -3,7 +3,7 @@ version: 1.1.0
 ignition:
   config:
     merge:
-      - local: flat_base.json
+      - local: flatcar_base.json
 storage:
   files:
     - path: /etc/systemd/network/static.network
