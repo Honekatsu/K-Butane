@@ -88,6 +88,25 @@ storage:
     - path: /home/flatcar/.alloy/config.alloy
       contents:
         inline: |
+          logging {
+            level = "warn"
+          }
+
+          loki.relabel "journal" {
+            forward_to = []
+
+            rule {
+              source_labels = ["__journal__systemd_unit"]
+              target_label  = "unit"
+            }
+          }
+
+          loki.source.journal "read"  {
+            forward_to    = [loki.write.grafana_loki.receiver]
+            relabel_rules = loki.relabel.journal.rules
+            labels        = {component = "loki.source.journal"}
+          }
+
           loki.write "grafana_loki" {
             endpoint {
               url = "http://172.20.5.2:3100/loki/api/v1/push"
