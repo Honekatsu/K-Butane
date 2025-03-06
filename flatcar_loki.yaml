@@ -58,7 +58,7 @@ storage:
           #!/usr/bin/env bash
           set -e
 
-          source ${PWD}/K-Loki/minio_loki/.minio_loki.env
+          source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
 
           mkdir -p ${PWD}/K-Loki/minio_loki/minio_data
           docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v ${PWD}/K-Loki/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
@@ -68,9 +68,9 @@ storage:
           #!/usr/bin/env bash
           set -e
 
-          source ${PWD}/K-Loki/minio_loki/.minio_loki.env
-          
+          source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
+
           docker run --name loki -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} -p 3100:3100 -v ${PWD}/K-Loki/loki/loki-config.yaml:/etc/loki/local-config.yaml grafana/loki -config.expand-env=true
     - path: "/home/flatcar/K-Loki/loki/loki-config.yaml"
       contents:
-        source: "https://github.com/Honekatsu/K-Loki/blob/main/loki/loki-config.yaml"
+        source: "https://raw.githubusercontent.com/Honekatsu/K-Loki/refs/heads/main/loki/loki-config.yaml"
