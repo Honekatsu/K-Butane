@@ -69,7 +69,8 @@ storage:
           set -e
 
           source ${PWD}/K-Loki/minio_loki/.minio_loki.env
-          docker run --name loki -p 3100:3100 -v ${PWD}/K-Loki/loki/loki-config.yaml:/etc/loki/local-config.yaml grafana/loki
+          
+          docker run --name loki -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} -p 3100:3100 -v ${PWD}/K-Loki/loki/loki-config.yaml:/etc/loki/local-config.yaml grafana/loki -config.expand-env=true
     - path: "/home/flatcar/K-Loki/loki/loki-config.yaml"
       contents:
         source: "https://github.com/Honekatsu/K-Loki/blob/main/loki/loki-config.yaml"
