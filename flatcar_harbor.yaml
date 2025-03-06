@@ -29,6 +29,8 @@ systemd:
       contents: |
         [Unit]
         Description=Install Harbor
+        Requires=docker.service
+        After=install_docker_compose.service
         
         [Service]
         Type=oneshot
