@@ -19,7 +19,7 @@ systemd:
         Type=simple
         ExecStartPre=-/usr/bin/docker stop minio_loki
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
-        ExecStart=/usr/bin/sh /home/flatcar/minio_loki/minio_loki.sh
+        ExecStart=/usr/bin/sh /home/flatcar/K-Loki/minio_loki/minio_loki.sh
 
         [Install]
         WantedBy=multi-user.target
@@ -35,7 +35,7 @@ systemd:
         Type=simple
         ExecStartPre=-/usr/bin/docker stop loki
         ExecStartPre=/usr/bin/docker pull grafana/loki
-        ExecStart=/usr/bin/sh /home/flatcar/loki/loki.sh
+        ExecStart=/usr/bin/sh /home/flatcar/K-Loki/loki/loki.sh
 
         [Install]
         WantedBy=multi-user.target
