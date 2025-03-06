@@ -23,6 +23,22 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: loki.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run Loki
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=simple
+        ExecStartPre=-/usr/bin/docker stop loki
+        ExecStartPre=/usr/bin/docker pull grafana/loki
+        ExecStart=/usr/bin/sh /home/flatcar/loki/loki.sh
+
+        [Install]
+        WantedBy=multi-user.target
 
 storage:
   files:

@@ -5,5 +5,5 @@ cat <source.yaml> | docker run -i --rm quay.io/coreos/butane:release > <dest.jso
 ```
 
 ```bash
-cat flat.yaml | docker run -i --rm -v ${PWD}:/pwd quay.io/coreos/butane:release --files-dir /pwd > flat.json
+cat flatcar.yaml | docker run -i --rm -v ${PWD}:/pwd quay.io/coreos/butane:release --files-dir /pwd > flatcar.json
 ```
