@@ -109,7 +109,7 @@ storage:
 
           loki.write "grafana_loki" {
             endpoint {
-              url = "http://172.20.5.2:3100/loki/api/v1/push"
+              url = "http://172.20.5.15:3100/loki/api/v1/push"
 
               // basic_auth {
               //  username = "admin"
