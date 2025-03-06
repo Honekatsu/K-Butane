@@ -52,13 +52,22 @@ storage:
           Address=172.20.5.15/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
-    - path: /home/flatcar/minio_loki/minio_loki.sh
+    - path: /home/flatcar/K-Loki/minio_loki/minio_loki.sh
       contents:
         inline: |
           #!/usr/bin/env bash
           set -e
 
-          source /home/flatcar/minio_loki/.minio_loki.env
+          source ${PWD}/K-Loki/minio_loki/.minio_loki.env
+          docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v ${PWD}/K-Loki/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
+    - path: /home/flatcar/K-Loki/loki/loki.sh
+      contents:
+        inline: |
+          #!/usr/bin/env bash
+          set -e
 
-          mkdir -p ${PWD}/minio_loki/minio_data/loki
-          docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v ${PWD}/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
+          source ${PWD}/K-Loki/minio_loki/.minio_loki.env
+          docker run --name loki -p 3100:3100 -v ${PWD}/K-Loki/loki/loki-config.yaml:/etc/loki/local-config.yaml grafana/loki
+    - path: "/home/flatcar/K-Loki/loki/loki-config.yaml"
+      contents:
+        source: "https://github.com/Honekatsu/K-Loki/blob/main/loki/loki-config.yaml"
