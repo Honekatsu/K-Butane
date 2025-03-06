@@ -36,8 +36,10 @@ systemd:
         Type=oneshot
         RemainAfterExit=true
         WorkingDirectory=/home/flatcar
+        User=flatcar
+        Group=docker
         ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
-        ExecStartPre=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
+        # ExecStartPre=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
         ExecStart=/usr/bin/sh /home/flatcar/harbor/install.sh
 
         [Install]
