@@ -18,10 +18,9 @@ systemd:
         [Service]
         Type=oneshot
         RemainAfterExit=true
-        Environment="DOCKER_CONFIG=/home/flatcar/.docker"
-        ExecStartPre=/usr/bin/mkdir -p $DOCKER_CONFIG/cli-plugins
-        ExecStartPre=/usr/bin/curl -SL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
-        ExecStart=/usr/bin/chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+        ExecStartPre=/usr/bin/mkdir -p /home/flatcar/.docker/cli-plugins
+        ExecStartPre=/usr/bin/curl -SL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64 -o /home/flatcar/.docker/cli-plugins/docker-compose
+        ExecStart=/usr/bin/chmod +x /home/flatcar/.docker/cli-plugins/docker-compose
 
         [Install]
         WantedBy=multi-user.target
