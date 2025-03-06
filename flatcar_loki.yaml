@@ -18,6 +18,7 @@ systemd:
         [Service]
         Type=simple
         ExecStartPre=-/usr/bin/docker stop minio_loki
+        ExecStartPre=-/usr/bin/docker rm minio_loki
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
         ExecStart=/usr/bin/sh /home/flatcar/K-Loki/minio_loki/minio_loki.sh
 
@@ -34,6 +35,7 @@ systemd:
         [Service]
         Type=simple
         ExecStartPre=-/usr/bin/docker stop loki
+        ExecStartPre=-/usr/bin/docker rm loki
         ExecStartPre=/usr/bin/docker pull grafana/loki
         ExecStart=/usr/bin/sh /home/flatcar/K-Loki/loki/loki.sh
 
@@ -61,7 +63,7 @@ storage:
           source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
 
           mkdir -p ${PWD}/K-Loki/minio_loki/minio_data
-          docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v ${PWD}/K-Loki/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
+          docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v /home/flatcar/K-Loki/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
     - path: /home/flatcar/K-Loki/loki/loki.sh
       contents:
         inline: |
@@ -70,7 +72,7 @@ storage:
 
           source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
 
-          docker run --name loki -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} -p 3100:3100 -v ${PWD}/K-Loki/loki/loki-config.yaml:/etc/loki/local-config.yaml grafana/loki -config.expand-env=true
-    - path: "/home/flatcar/K-Loki/loki/loki-config.yaml"
+          docker run --name loki -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} -p 3100:3100 -v /home/flatcar/K-Loki/loki/loki_config:/etc/loki grafana/loki -config.expand-env=true -config.file=/etc/loki/config.yaml
+    - path: "/home/flatcar/K-Loki/loki/loki_config/config.yaml"
       contents:
         source: "https://raw.githubusercontent.com/Honekatsu/K-Loki/refs/heads/main/loki-config.yaml"
