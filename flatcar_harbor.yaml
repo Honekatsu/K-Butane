@@ -1,0 +1,56 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: flatcar_base.json
+
+systemd:
+  units:
+    - name: install_docker_compose.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install Docker-compose
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=true
+        Environment="DOCKER_CONFIG=/home/flatcar/.docker"
+        ExecStartPre=/usr/bin/mkdir -p $DOCKER_CONFIG/cli-plugins
+        ExecStartPre=/usr/bin/curl -SL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+        ExecStart=/usr/bin/chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: install_harbor.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install Harbor
+        
+        [Service]
+        Type=oneshot
+        ReaminAfterExit=true
+        ExecStart=/usr/bin/tar xzvf harbor-online-installer.tgz
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  files:
+    - path: /etc/systemd/network/static.network
+      contents:
+        inline: |
+          [Match]
+          Name=eth0
+
+          [Network]
+          Address=172.20.5.2/16
+          Gateway=172.20.0.1
+          NTP=172.20.0.1
+    - path: "/home/flatcar/Harbor/harbor-online-installer.tgz"
+      contents: 
+        source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
