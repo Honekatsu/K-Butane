@@ -29,13 +29,15 @@ systemd:
       contents: |
         [Unit]
         Description=Install Harbor
-        Requires=docker.service
+        Requires=install_docker_compose.service
         After=install_docker_compose.service
         
         [Service]
         Type=oneshot
-        ReaminAfterExit=true
-        ExecStart=/usr/bin/tar xzvf harbor-online-installer.tgz
+        RemainAfterExit=true
+        WorkingDirectory=/home/flatcar
+        ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
+        ExecStart=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
 
         [Install]
         WantedBy=multi-user.target
@@ -52,6 +54,9 @@ storage:
           Address=172.20.5.2/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
-    - path: "/home/flatcar/Harbor/harbor-online-installer.tgz"
+    - path: /etc/hostname
+      contents:
+        inline: harbor.honeblog.com
+    - path: "/home/flatcar/.harbor/harbor-online-installer.tgz"
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
