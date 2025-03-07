@@ -30,8 +30,8 @@ systemd:
         Type=oneshot
         RemainAfterExit=true
         WorkingDirectory=/home/flatcar
-        User=root
-        Group=root
+        User=flatcar
+        Group=flatcar
         ExecStartPre=-/usr/bin/mkdir /home/flatcar/.harbor/harbor_installer
         ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz -C /home/flatcar/.harbor/harbor_installer --strip-components 1
         ExecStart=/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/.harbor/harbor_installer/harbor.yml
@@ -57,6 +57,8 @@ storage:
     - path: "/home/flatcar/.harbor/harbor-online-installer.tgz"
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
+      user: {name: flatcar}
+      group: {name: flatcar}
     - path: "/home/flatcar/.harbor/harbor.yml"
       contents:
         local: config/harbor.yml
