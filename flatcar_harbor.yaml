@@ -18,27 +18,6 @@ systemd:
             ExecStartPre=/usr/lib/systemd/systemd-sysupdate -C docker_compose update
             ExecStartPost=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/docker_compose.raw > /tmp/docker_compose-new"
             ExecStartPost=/usr/bin/sh -c "if ! cmp --silent /tmp/docker_compose /tmp/docker_compose-new; then touch /run/reboot-required; fi"
-    - name: install_harbor.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Install Harbor
-        Requires=systemd-sysupdate.service
-        After=systemd-sysupdate.service
-        
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        WorkingDirectory=/home/flatcar
-        User=flatcar
-        Group=sudo
-        ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
-        # ExecStartPre=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
-        ExecStartPre=-/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/harbor/harbor.yml
-        ExecStart=/usr/bin/sh /home/flatcar/harbor/install.sh
-
-        [Install]
-        WantedBy=multi-user.target
 
 storage:
   files:
