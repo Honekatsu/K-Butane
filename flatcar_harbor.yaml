@@ -34,6 +34,7 @@ systemd:
         Group=sudo
         ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
         # ExecStartPre=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
+        ExecStartPre=-/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/harbor/harbor.yml
         ExecStart=/usr/bin/sh /home/flatcar/harbor/install.sh
 
         [Install]
@@ -57,7 +58,7 @@ storage:
     - path: "/home/flatcar/.harbor/harbor-online-installer.tgz"
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
-    - path: "/home/flatcar/harbor/harbor.yml"
+    - path: "/home/flatcar/.harbor/harbor.yml"
       contents:
         local: config/harbor.yml
     - path: /opt/extensions/docker_compose/docker_compose-2.24.5-x86-64.raw
