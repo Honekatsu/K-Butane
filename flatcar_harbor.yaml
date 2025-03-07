@@ -32,8 +32,9 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=root
         Group=root
-        ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
-        ExecStart=/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/harbor/harbor.yml
+        ExecStartPre=-/usr/bin/mkdir /home/flatcar/.harbor/harbor_installer
+        ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz -C /home/flatcar/.harbor/harbor_installer --strip-components 1
+        ExecStart=/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/.harbor/harbor_installer/harbor.yml
 
         [Install]
         WantedBy=multi-user.target
