@@ -1,0 +1,41 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: flatcar_base.json
+
+systemd:
+  units:
+    - name: install_docker_compose.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install Docker-compose(User)
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=true
+        User=flatcar
+        Group=sudo
+        ExecStartPre=-/usr/bin/mkdir -p /home/flatcar/.docker/cli-plugins
+        ExecStartPre=-/usr/bin/curl -SL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64 -o /home/flatcar/.docker/cli-plugins/docker-compose
+        ExecStart=/usr/bin/chmod +x /home/flatcar/.docker/cli-plugins/docker-compose
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  files:
+    - path: /etc/systemd/network/static.network
+      contents:
+        inline: |
+          [Match]
+          Name=eth0
+
+          [Network]
+          Address=172.20.5.2/16
+          Gateway=172.20.0.1
+          NTP=172.20.0.1

@@ -7,37 +7,31 @@ ignition:
 
 systemd:
   units:
-    - name: install_docker_compose.service
+    - name: systemd-sysupdate.timer
       enabled: true
-      contents: |
-        [Unit]
-        Description=Install Docker-compose
-        Requires=docker.service
-        After=docker.service
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        ExecStartPre=/usr/bin/mkdir -p /home/flatcar/.docker/cli-plugins
-        ExecStartPre=/usr/bin/curl -SL https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64 -o /home/flatcar/.docker/cli-plugins/docker-compose
-        ExecStart=/usr/bin/chmod +x /home/flatcar/.docker/cli-plugins/docker-compose
-
-        [Install]
-        WantedBy=multi-user.target
+    - name: systemd-sysupdate.service
+      dropins:
+        - name: docker_compose.conf
+          contents: |
+            [Service]
+            ExecStartPre=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/docker_compose.raw > /tmp/docker_compose"
+            ExecStartPre=/usr/lib/systemd/systemd-sysupdate -C docker_compose update
+            ExecStartPost=/usr/bin/sh -c "readlink --canonicalize /etc/extensions/docker_compose.raw > /tmp/docker_compose-new"
+            ExecStartPost=/usr/bin/sh -c "if ! cmp --silent /tmp/docker_compose /tmp/docker_compose-new; then touch /run/reboot-required; fi"
     - name: install_harbor.service
       enabled: true
       contents: |
         [Unit]
         Description=Install Harbor
-        Requires=install_docker_compose.service
-        After=install_docker_compose.service
+        Requires=systemd-sysupdate.service
+        After=systemd-sysupdate.service
         
         [Service]
         Type=oneshot
         RemainAfterExit=true
         WorkingDirectory=/home/flatcar
         User=flatcar
-        Group=docker
+        Group=sudo
         ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz
         # ExecStartPre=-/usr/bin/rm -r /home/flatcar/.harbor/harbor-online-installer.tgz
         ExecStart=/usr/bin/sh /home/flatcar/harbor/install.sh
@@ -63,3 +57,20 @@ storage:
     - path: "/home/flatcar/.harbor/harbor-online-installer.tgz"
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
+    - path: "/home/flatcar/harbor/harbor.yml"
+      contents:
+        local: config/harbor.yml
+    - path: /opt/extensions/docker_compose/docker_compose-2.24.5-x86-64.raw
+      mode: 0644
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/docker_compose-2.24.5-x86-64.raw
+    - path: /etc/sysupdate.docker_compose.d/docker_compose.conf
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/docker_compose.conf
+    - path: /etc/sysupdate.d/noop.conf
+      contents:
+        source: https://github.com/flatcar/sysext-bakery/releases/download/latest/noop.conf
+  links:
+    - target: /opt/extensions/docker_compose/docker_compose-2.24.5-x86-64.raw
+      path: /etc/extensions/docker_compose.raw
+      hard: false
