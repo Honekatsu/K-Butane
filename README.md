@@ -1,4 +1,4 @@
-# 自宅サーバーのButane構成ファイル
+# Butaneマニフェストファイル
 
 ## Ignition用JSONの生成
 
