@@ -40,6 +40,25 @@ systemd:
         WantedBy=multi-user.target
 
 storage:
+  directories:
+    - path: /home/flatcar/.harbor/
+      user: {name: flatcar}
+      group: {name: flatcar}
+    - path: /home/flatcar/.harbor/certs/
+      user: {name: flatcar}
+      group: {name: flatcar}
+    - path: /home/flatcar/.harbor/data/
+      user: {id: 10000}
+      group: {id: 10000}
+    - path: /home/flatcar/.harbor/data/database/pg15
+      user: {id: 999}
+      group: {id: 999}
+    - path: /home/flatcar/.harbor/data/redis
+      user: {id: 999}
+      group: {id: 999}
+    - path: /etc/docker/certs.d/harbor.honeblog.com/
+      user: {name: root}
+      group: {name: root}
   files:
     - path: /etc/systemd/network/static.network
       contents:
