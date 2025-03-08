@@ -3,7 +3,7 @@ version: 1.1.0
 ignition:
   config:
     merge:
-      - local: flatcar_base.json
+      - local: out/flatcar_base.json
 
 systemd:
   units:
@@ -106,7 +106,7 @@ storage:
       group: {name: flatcar}
     - path: /home/flatcar/.harbor/harbor.yml
       contents:
-        local: config/harbor.yml
+        local: config/flatcar_harbor/harbor.yml
       user: {name: flatcar}
       group: {name: flatcar}
     - path: /opt/extensions/docker_compose/docker_compose-2.24.5-x86-64.raw

@@ -4,7 +4,7 @@ passwd:
   users:
     - name: flatcar
       ssh_authorized_keys_local:
-        - authorized_keys
+        - config/flatcar_base/authorized_keys
       groups: [sudo, docker]
 systemd:
   units:
