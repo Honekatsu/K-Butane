@@ -41,22 +41,27 @@ systemd:
 
 storage:
   directories:
-    - path: /home/flatcar/.harbor/
+    - path: /home/flatcar/.harbor
       user: {name: flatcar}
       group: {name: flatcar}
-    - path: /home/flatcar/.harbor/certs/
+    - path: /home/flatcar/.harbor/certs
+      overwrite: false
       user: {name: flatcar}
       group: {name: flatcar}
-    - path: /home/flatcar/.harbor/data/
+    - path: /home/flatcar/.harbor/data
+      overwrite: false
       user: {id: 10000}
       group: {id: 10000}
     - path: /home/flatcar/.harbor/data/database/pg15
+      overwrite: false
       user: {id: 999}
       group: {id: 999}
     - path: /home/flatcar/.harbor/data/redis
+      overwrite: false
       user: {id: 999}
       group: {id: 999}
-    - path: /etc/docker/certs.d/harbor.honeblog.com/
+    - path: /etc/docker/certs.d/harbor.honeblog.com
+      overwrite: false
       user: {name: root}
       group: {name: root}
   files:
@@ -73,12 +78,12 @@ storage:
     - path: /etc/hostname
       contents:
         inline: harbor.honeblog.com
-    - path: "/home/flatcar/.harbor/harbor-online-installer.tgz"
+    - path: /home/flatcar/.harbor/harbor-online-installer.tgz
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
       user: {name: flatcar}
       group: {name: flatcar}
-    - path: "/home/flatcar/.harbor/harbor.yml"
+    - path: /home/flatcar/.harbor/harbor.yml
       contents:
         local: config/harbor.yml
       user: {name: flatcar}
