@@ -19,3 +19,5 @@ sh create_flatcar_loki.sh
 ```bash
 sh create_flatcar_harbor.sh
 ```
+
+証明書の生成周りはNotionにまとめてる
