@@ -14,10 +14,12 @@ sh create_flatcar.sh
 sh create_flatcar_loki.sh
 ```
 
+[Loki設定ファイル](https://github.com/Honekatsu/K-Loki)
+
 ## Flatcar_harbor(Harbor)
 
 ```bash
 sh create_flatcar_harbor.sh
 ```
 
-証明書の生成周りはNotionにまとめてる
+証明書の生成周りはNotion参照
