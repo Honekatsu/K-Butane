@@ -60,6 +60,10 @@ storage:
       overwrite: false
       user: {id: 10000}
       group: {id: 10000}
+    - path: /home/flatcar/.harbor/data/secret/cert
+      overwrite: false
+      user: {id: 10000}
+      group: {id: 10000}
     - path: /home/flatcar/.harbor/data/secret/keys/secretkey
       overwrite: false
       user: {id: 10000}
