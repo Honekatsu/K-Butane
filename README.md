@@ -1,22 +1,20 @@
-#
+# 自宅サーバーのButane構成ファイル
 
-```bash
-cat <source.yaml> | docker run -i --rm quay.io/coreos/butane:release > <dest.json>
-```
+## Ignition用JSONの生成
 
-## flatcar
+## Flatcar
 
 ```bash
 sh create_flatcar.sh
 ```
 
-## Flatcar_loki
+## Flatcar_loki(Loki & MiniO)
 
 ```bash
 sh create_flatcar_loki.sh
 ```
 
-## Flatcar_harbor
+## Flatcar_harbor(Harbor)
 
 ```bash
 sh create_flatcar_harbor.sh
