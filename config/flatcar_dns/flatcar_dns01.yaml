@@ -38,6 +38,7 @@ storage:
           Gateway=172.20.0.1
           NTP=172.20.0.1
     - path: /etc/hosts
+      overwrite: true
       contents:
         local: config/flatcar_dns/hosts
     - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
