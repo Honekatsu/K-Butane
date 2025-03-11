@@ -1,0 +1,7 @@
+. {
+  whoami
+  hosts {
+    172.20.5.2 harbor.honeblog.com
+    fallthrough
+  }
+}

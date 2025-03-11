@@ -117,3 +117,6 @@ storage:
               // }
             }
           }
+    - path: /etc/docker/certs.d/harbor.honeblog.com
+      contents:
+        local: config/flatcar_base/ca.crt
