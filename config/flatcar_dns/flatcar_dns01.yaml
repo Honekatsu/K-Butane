@@ -17,6 +17,8 @@ systemd:
 
         [Service]
         Type=simple
+        User=flatcar
+        Group=flatcar
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/coredns:latest
