@@ -1,0 +1,49 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: out/flatcar_base.json
+
+systemd:
+  units:
+    - name: core_dns.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run CoreDNS
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=simple
+        User=flatcar
+        Group=flatcar
+        ExecStartPre=-/usr/bin/docker stop coredns
+        ExecStartPre=-/usr/bin/docker rm coredns
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/coredns:latest
+        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp -p 9153:9153 harbor.honeblog.com/network/coredns -conf /etc/coredns/Corefile
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  files:
+    - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
+      overwrite: true
+      contents:
+        inline: |
+          [Resolve]
+          DNS=172.20.0.1
+    - path: /etc/hosts
+      overwrite: true
+      contents:
+        local: config/flatcar_dns/hosts
+    - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
+      contents: 
+        inline: |
+          [Resolve]
+          DNSStubListener=no
+    - path: /home/flatcar/.coredns/config/Corefile
+      contents:
+        local: config/flatcar_dns/Corefile
