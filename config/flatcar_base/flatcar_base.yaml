@@ -85,7 +85,6 @@ storage:
         inline: |
           [Resolve]
           DNS=172.20.0.4 172.20.0.5
-
     - path: /home/flatcar/.alloy/config.alloy
       contents:
         inline: |

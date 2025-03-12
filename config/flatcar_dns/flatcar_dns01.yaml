@@ -40,6 +40,7 @@ storage:
           Gateway=172.20.0.1
           NTP=172.20.0.1
     - path: /etc/systemd/resolved.conf.d/DNS.conf
+      overwrite: true
       contents:
         inline: |
           [Resolve]

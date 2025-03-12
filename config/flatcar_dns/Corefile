@@ -2,7 +2,7 @@
   errors
   ready
   loop
-  prometheus
+  prometheus 0.0.0.0:9153
   reload
   whoami
   hosts {
