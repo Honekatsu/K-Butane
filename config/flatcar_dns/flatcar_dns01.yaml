@@ -39,7 +39,7 @@ storage:
           Address=172.20.0.4/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
-    - path: /etc/systemd/resolved.conf.d/DNS.conf
+    - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
       contents:
         inline: |

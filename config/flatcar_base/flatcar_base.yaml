@@ -80,7 +80,7 @@ storage:
       hard: false
       overwrite: true
   files:
-    - path: /etc/systemd/resolved.conf.d/DNS.conf
+    - path: /etc/systemd/resolved.conf.d/0-DNS.conf
       contents:
         inline: |
           [Resolve]
