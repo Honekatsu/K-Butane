@@ -1,7 +1,14 @@
 . {
+  errors
+  ready
+  loop
+  prometheus
+  reload
   whoami
   hosts {
     172.20.5.2 harbor.honeblog.com
     fallthrough
   }
+
+  forward . 172.20.0.1
 }

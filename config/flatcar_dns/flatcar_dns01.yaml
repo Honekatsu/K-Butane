@@ -22,7 +22,7 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/coredns:latest
-        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp harbor.honeblog.com/network/coredns -conf /etc/coredns/Corefile
+        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp -p 9153:9153 harbor.honeblog.com/network/coredns -conf /etc/coredns/Corefile
 
         [Install]
         WantedBy=multi-user.target
@@ -39,6 +39,11 @@ storage:
           Address=172.20.0.4/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
+    - path: /etc/systemd/resolved.conf.d/DNS.conf
+      contents:
+        inline: |
+          [Resolve]
+          DNS=172.20.0.1
     - path: /etc/hosts
       overwrite: true
       contents:
