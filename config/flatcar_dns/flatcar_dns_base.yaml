@@ -4,7 +4,11 @@ ignition:
   config:
     merge:
       - local: out/flatcar_base.json
-
+passwd:
+  users:
+    - name: k-dns
+      no_create_home: true
+      groups: [docker]
 systemd:
   units:
     - name: core_dns.service
@@ -17,8 +21,8 @@ systemd:
 
         [Service]
         Type=simple
-        User=flatcar
-        Group=flatcar
+        User=k-dns
+        Group=k-dns
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/coredns:latest
@@ -45,5 +49,7 @@ storage:
           [Resolve]
           DNSStubListener=no
     - path: /home/flatcar/.coredns/config/Corefile
+      user: {name: k-dns}
+      group: {name: k-dns}
       contents:
         local: config/flatcar_dns/Corefile
