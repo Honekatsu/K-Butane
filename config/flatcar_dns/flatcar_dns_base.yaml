@@ -7,7 +7,6 @@ ignition:
 passwd:
   users:
     - name: k-dns
-      no_create_home: true
       groups: [docker]
 systemd:
   units:
