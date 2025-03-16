@@ -8,6 +8,8 @@ passwd:
   users:
     - name: k-dns
       groups: [docker]
+    - name: k-reverse-proxy
+      groups: [docker]
 systemd:
   units:
     - name: core_dns.service
@@ -29,6 +31,25 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: traefil.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run Traefik
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=simple
+        User=k-reverse-proxy
+        Group=k-reverse-proxy
+        ExecStartPre=-/usr/bin/docker stop traefik
+        ExecStartPre=-/usr/bin/docker rm traefik
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
+        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -p 80:80
+
+        [Install]
+        WantedBy=multi-user.target
 
 storage:
   files:
@@ -41,7 +62,7 @@ storage:
     - path: /etc/hosts
       overwrite: true
       contents:
-        local: config/flatcar_dns/hosts
+        local: config/flatcar_net/hosts
     - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
       contents: 
         inline: |
@@ -51,4 +72,14 @@ storage:
       user: {name: k-dns}
       group: {name: k-dns}
       contents:
-        local: config/flatcar_dns/Corefile
+        local: config/flatcar_net/Corefile
+    - path: /home/flatcar/.traefik/config/traefik.yml
+      user: {name: k-reverse-proxy}
+      group: {name: k-reverse-proxy}
+      contents:
+        local: config/flatcar_net/traefik/traefik.yml
+    - path: /home/flatcar/.traefik/config/external_service.yml
+      user: {name: k-reverse-proxy}
+      group: {name: k-reverse-proxy}
+      contents:
+        local: config/flatcar_net/traefik/external_service.yml

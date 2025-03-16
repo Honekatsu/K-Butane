@@ -1,0 +1,9 @@
+entryPoints:
+  web:
+    address: :80
+  web-sec:
+    address: :443
+
+providers:
+  file:
+    filename: /etc/traefik/external_service.yml

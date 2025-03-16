@@ -1,0 +1,12 @@
+http:
+  routers:
+    harbor:
+      entryPoints:
+        - web-sec
+      rule: Host(`harbor.honeblog.com`)
+      service: harbor
+  services:
+    harbor:
+      loadBalancer:
+        servers:
+        - url: "https://harbor.honeblog.com/"
