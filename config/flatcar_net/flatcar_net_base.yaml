@@ -31,7 +31,7 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
-    - name: traefil.service
+    - name: traefik.service
       enabled: true
       contents: |
         [Unit]
@@ -46,12 +46,16 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
-        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -p 80:80 -p 443:443/tcp
+        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -v /home/flatcar/.traefik/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 -p 443:443/tcp harbor.honeblog.com/network/traefik
 
         [Install]
         WantedBy=multi-user.target
 
 storage:
+  directories:
+    - path: /home/flatcar/.traefik/logs
+      user: {name: k-reverse-proxy}
+      group: {name: k-reverse-proxy}   
   files:
     - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
