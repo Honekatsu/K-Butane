@@ -1,12 +1,19 @@
 http:
   routers:
-    harbor:
+    dashboard01:
+      rule: Host(`traefik01.honeblog.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      service: api@internal
+    dashboard02:
+      rule: Host(`traefik02.honeblog.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      service: api@internal
+
+    grafana:
       entryPoints:
-        - web-sec
-      rule: Host(`harbor.honeblog.com`)
-      service: harbor
+        - web
+      rule: Host(`grafana.honeblog.com`)
+      service: grafana
   services:
-    harbor:
+    grafana:
       loadBalancer:
         servers:
-        - url: "https://harbor.honeblog.com/"
+        - url: "http://172.20.5.1:3000"

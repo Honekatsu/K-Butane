@@ -46,7 +46,7 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
-        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -p 80:80
+        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -p 80:80 -p 443:443/tcp
 
         [Install]
         WantedBy=multi-user.target
@@ -72,7 +72,7 @@ storage:
       user: {name: k-dns}
       group: {name: k-dns}
       contents:
-        local: config/flatcar_net/Corefile
+        local: config/flatcar_net/coredns/Corefile
     - path: /home/flatcar/.traefik/config/traefik.yml
       user: {name: k-reverse-proxy}
       group: {name: k-reverse-proxy}

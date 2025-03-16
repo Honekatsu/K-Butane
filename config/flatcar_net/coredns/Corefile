@@ -7,6 +7,12 @@
   whoami
   hosts {
     172.20.5.2 harbor.honeblog.com
+
+    172.20.5.4 grafana.honeblog.com
+    172.20.5.5 grafana.honeblog.com
+
+    172.20.5.4 traefik01.honeblog.com
+    172.20.5.5 traefik02.honeblog.com
     fallthrough
   }
 

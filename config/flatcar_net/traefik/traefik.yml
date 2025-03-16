@@ -4,6 +4,12 @@ entryPoints:
   web-sec:
     address: :443
 
+api:
+  insecure: false
+  dashboard: true
+
 providers:
+  docker:
+    exposedByDefault: false
   file:
     filename: /etc/traefik/external_service.yml
