@@ -46,7 +46,7 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
-        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -v /home/flatcar/.traefik/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 -p 443:443/tcp harbor.honeblog.com/network/traefik
+        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -v /home/flatcar/.traefik/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 -p 443:443/tcp -p 8082:8082/tcp -l traefik.enable=true harbor.honeblog.com/network/traefik
 
         [Install]
         WantedBy=multi-user.target

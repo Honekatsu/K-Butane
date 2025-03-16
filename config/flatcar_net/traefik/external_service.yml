@@ -1,10 +1,10 @@
 http:
   routers:
     dashboard01:
-      rule: Host(`traefik01.honeblog.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      rule: Host(`traefik01.honeblog.com`)
       service: api@internal
     dashboard02:
-      rule: Host(`traefik02.honeblog.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      rule: Host(`traefik02.honeblog.com`)
       service: api@internal
 
     grafana:

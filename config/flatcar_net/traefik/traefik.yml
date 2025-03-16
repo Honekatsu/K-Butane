@@ -3,11 +3,24 @@ log:
   maxSize: 50
   maxBackups: 3
 
+accessLog:
+  filePath: "/logs/access.log"
+  format: "json"
+  bufferingSize: 100
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    entryPoint: metrics
+
 entryPoints:
   web:
     address: :80
   web-sec:
     address: :443
+  metrics:
+    address: :8082
+
 
 api:
   insecure: false
