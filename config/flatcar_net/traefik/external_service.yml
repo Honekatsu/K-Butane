@@ -3,17 +3,27 @@
 http:
   routers:
     dashboard01:
+      entryPoints:
+        - dashboard
       rule: Host(`traefik01.honeblog.com`)
       service: api@internal
+      tls:
+        certResolver: cloudflare
     dashboard02:
+      entryPoints:
+        - dashboard
       rule: Host(`traefik02.honeblog.com`)
       service: api@internal
+      tls:
+        certResolver: cloudflare
 
     grafana:
       entryPoints:
-        - web
+        - web-sec
       rule: Host(`grafana.honeblog.com`)
       service: grafana
+      tls:
+        certResolver: cloudflare
     minio-loki:
       entryPoints:
         - web-sec
@@ -21,6 +31,7 @@ http:
       service: minio-loki
       tls:
         certResolver: cloudflare
+
   services:
     grafana:
       loadBalancer:

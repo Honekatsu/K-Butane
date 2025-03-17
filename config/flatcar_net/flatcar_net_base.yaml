@@ -52,7 +52,7 @@ systemd:
           -v /home/flatcar/.traefik/logs:/logs\
           -v /home/flatcar/.traefik/acme:/acme\
           -v /var/run/docker.sock:/var/run/docker.sock\
-          -p 80:80 -p 443:443/tcp -p 8082:8082/tcp\
+          -p 80:80 -p 443:443/tcp -p 8082:8082/tcp -p 8080:8080/tcp\
           -l traefik.enable=true\
           harbor.honeblog.com/network/traefik
 
