@@ -4,14 +4,14 @@ http:
   routers:
     dashboard01:
       entryPoints:
-        - dashboard
+        - web-sec-private
       rule: Host(`traefik01.honeblog.com`)
       service: api@internal
       tls:
         certResolver: cloudflare
     dashboard02:
       entryPoints:
-        - dashboard
+        - web-sec-private
       rule: Host(`traefik02.honeblog.com`)
       service: api@internal
       tls:
@@ -26,7 +26,7 @@ http:
         certResolver: cloudflare
     minio-loki:
       entryPoints:
-        - web-sec
+        - web-sec-private
       rule: Host(`minio-loki.honeblog.com`)
       service: minio-loki
       tls:

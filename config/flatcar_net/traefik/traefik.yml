@@ -18,10 +18,10 @@ entryPoints:
     address: :80
   web-sec:
     address: :443
+  web-sec-private:
+    address: :8443
   metrics:
     address: :8082
-  dashboard:
-    address: :8080
 
 
 api:
