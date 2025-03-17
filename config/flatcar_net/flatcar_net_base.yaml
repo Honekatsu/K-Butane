@@ -87,11 +87,6 @@ storage:
         inline: |
           [Resolve]
           DNSStubListener=no
-    - path: /home/flatcar/.coredns/config/Corefile
-      user: {name: k-dns}
-      group: {name: k-dns}
-      contents:
-        local: config/flatcar_net/coredns/Corefile
     - path: /home/flatcar/.traefik/config/traefik.yml
       user: {name: k-reverse-proxy}
       group: {name: k-reverse-proxy}

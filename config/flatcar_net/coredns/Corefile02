@@ -1,0 +1,19 @@
+. {
+  errors
+  ready
+  loop
+  prometheus 0.0.0.0:9153
+  reload
+  whoami
+  hosts {
+    172.20.5.2 harbor.honeblog.com
+
+    172.20.0.5 grafana.honeblog.com
+    172.20.0.5 traefik02.honeblog.com
+    172.20.0.5 minio-loki.honeblog.com
+
+    fallthrough
+  }
+
+  forward . 172.20.0.1
+}
