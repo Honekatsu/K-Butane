@@ -31,3 +31,13 @@ providers:
     exposedByDefault: false
   file:
     filename: /etc/traefik/external_service.yml
+
+certificatesResolvers:
+  cloudflare:
+    acme:
+      keyType: 'EC384'
+      storage: /acme/acme.json
+      dnsChallenge:
+        provider: cloudflare
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      

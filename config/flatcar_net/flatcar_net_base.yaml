@@ -46,7 +46,15 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
-        ExecStart=/usr/bin/docker run --rm --name traefik -v /home/flatcar/.traefik/config:/etc/traefik -v /home/flatcar/.traefik/logs:/logs -v /var/run/docker.sock:/var/run/docker.sock -p 80:80 -p 443:443/tcp -p 8082:8082/tcp -l traefik.enable=true harbor.honeblog.com/network/traefik
+        ExecStart=/usr/bin/docker run --rm --name traefik\
+          --env-file /home/flatcar/.traefik/.traefik.env\
+          -v /home/flatcar/.traefik/config:/etc/traefik\
+          -v /home/flatcar/.traefik/logs:/logs\
+          -v /home/flatcar/.traefik/acme:/acme\
+          -v /var/run/docker.sock:/var/run/docker.sock\
+          -p 80:80 -p 443:443/tcp -p 8082:8082/tcp\
+          -l traefik.enable=true\
+          harbor.honeblog.com/network/traefik
 
         [Install]
         WantedBy=multi-user.target
@@ -55,7 +63,10 @@ storage:
   directories:
     - path: /home/flatcar/.traefik/logs
       user: {name: k-reverse-proxy}
-      group: {name: k-reverse-proxy}   
+      group: {name: k-reverse-proxy}
+    - path: /home/flatcar/.traefik/acme
+      user: {name: k-reverse-proxy}
+      group: {name: k-reverse-proxy}  
   files:
     - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
@@ -63,6 +74,10 @@ storage:
         inline: |
           [Resolve]
           DNS=172.20.0.1
+    - path: /etc/sysconfig/iptables
+      contents:
+        inline: |
+
     - path: /etc/hosts
       overwrite: true
       contents:

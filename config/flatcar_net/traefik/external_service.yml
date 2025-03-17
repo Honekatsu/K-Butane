@@ -1,3 +1,5 @@
+# !Note: 
+
 http:
   routers:
     dashboard01:
@@ -12,8 +14,20 @@ http:
         - web
       rule: Host(`grafana.honeblog.com`)
       service: grafana
+    minio-loki:
+      entryPoints:
+        - web-sec
+      rule: Host(`minio-loki.honeblog.com`)
+      service: minio-loki
+      tls:
+        certResolver: cloudflare
   services:
     grafana:
       loadBalancer:
         servers:
         - url: "http://172.20.5.1:3000"
+    minio-loki:
+      loadBalancer:
+        servers:
+        - url: "http://172.20.5.15:9001" 
+        
