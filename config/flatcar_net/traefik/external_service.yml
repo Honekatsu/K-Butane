@@ -1,4 +1,14 @@
-# !Note: 
+# !Note:
+
+http:
+  routers:
+    dashboard01:
+      entryPoints:
+        - web-sec-private
+      rule: Host(`traefik01.honeblog.com`)
+      service: api@internal
+      tls:
+# !Note:
 
 http:
   routers:
@@ -19,7 +29,7 @@ http:
 
     grafana:
       entryPoints:
-        - web-sec
+        - web-sec-private
       rule: Host(`grafana.honeblog.com`)
       service: grafana
       tls:
@@ -31,6 +41,13 @@ http:
       service: minio-loki
       tls:
         certResolver: cloudflare
+    harbor:
+      entryPoints:
+        - web-sec-private
+      rule: Host(`harbor.honeblog.com`)
+      service: harbor
+      tls:
+        certResolver: cloudflare
 
   services:
     grafana:
@@ -40,5 +57,8 @@ http:
     minio-loki:
       loadBalancer:
         servers:
-        - url: "http://172.20.5.15:9001" 
-        
+        - url: "http://172.20.5.15:9001"
+    harbor:
+      loadBalancer:
+        servers:
+        - url: "http://172.20.5.2:80"

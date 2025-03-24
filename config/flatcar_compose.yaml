@@ -36,6 +36,6 @@ storage:
           Name=eth0
 
           [Network]
-          Address=172.20.5.2/16
+          Address=172.20.5.*/16
           Gateway=172.20.0.1
           NTP=172.20.0.1

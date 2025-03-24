@@ -26,8 +26,8 @@ systemd:
         Group=k-dns
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/coredns:latest
-        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp -p 9153:9153 harbor.honeblog.com/network/coredns -conf /etc/coredns/Corefile
+        ExecStartPre=/usr/bin/docker pull coredns/coredns:latest
+        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp -p 9153:9153 coredns/coredns -conf /etc/coredns/Corefile
 
         [Install]
         WantedBy=multi-user.target
@@ -45,7 +45,7 @@ systemd:
         Group=k-reverse-proxy
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/network/traefik:latest
+        ExecStartPre=/usr/bin/docker pull traefik:latest
         ExecStart=/usr/bin/docker run --rm --name traefik\
           --env-file /home/flatcar/.traefik/.traefik.env\
           -v /home/flatcar/.traefik/config:/etc/traefik\
@@ -54,7 +54,7 @@ systemd:
           -v /var/run/docker.sock:/var/run/docker.sock\
           -p 80:80 -p 443:443/tcp -p 8082:8082/tcp -p 8443:8443/tcp\
           -l traefik.enable=true\
-          harbor.honeblog.com/network/traefik
+          traefik:latest
 
         [Install]
         WantedBy=multi-user.target
