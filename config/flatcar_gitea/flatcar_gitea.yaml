@@ -54,15 +54,15 @@ systemd:
         RemainAfterExit=true
         WorkingDirectory=/home/flatcar
         User=postgres
-        Group=postgress
-        ExecStartPre=-/usr/bin/docker stop gitea-postgress
-        ExecStartPre=-/usr/bin/docker rm gitea-postgress
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/database/postgress
-        ExecStart=/usr/bin/docker run --rm --name gitea-postgress\
-          -v /home/flatcar/.gitea-postgress/data:/var/lib/postgresql/data\
+        Group=postgres
+        ExecStartPre=-/usr/bin/docker stop gitea-postgres
+        ExecStartPre=-/usr/bin/docker rm gitea-postgres
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/database/postgres
+        ExecStart=/usr/bin/docker run --rm --name gitea-postgres\
+          -v /home/flatcar/.gitea-postgres/data:/var/lib/postgresql/data\
           -p 5432:5432\
-          --env-file /home/flatcar/.postgress/.env\
-          harbor.honeblog.com/database/postgress:latest
+          --env-file /home/flatcar/.postgres/.env\
+          harbor.honeblog.com/database/postgres:latest
 
         [Install]
         WantedBy=multi-user.target
@@ -74,7 +74,7 @@ storage:
     - path: /home/flatcar/.gitea/config
       user: { name: gitea }
       group: { name: gitea }
-    - path: /home/flatcar/.gitea-postgress/data
+    - path: /home/flatcar/.gitea-postgres/data
       user: { name: postgres }
       group: { name: postgres }
   files:
