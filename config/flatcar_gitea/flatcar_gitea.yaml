@@ -61,9 +61,8 @@ systemd:
         ExecStart=/usr/bin/docker run --rm --name gitea-postgres\
           -v /home/flatcar/.gitea-postgres/data:/var/lib/postgresql/data\
           -p 5432:5432\
-          --env-file /home/flatcar/.postgres/.env\
+          --env-file /home/flatcar/.gitea-postgres/.env\
           harbor.honeblog.com/database/postgres:latest
-
         [Install]
         WantedBy=multi-user.target
 storage:

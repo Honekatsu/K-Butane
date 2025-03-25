@@ -77,11 +77,6 @@ storage:
     # - path: /etc/sysconfig/iptables
     #   contents:
     #     inline: |
-
-    # - path: /etc/hosts
-    #   overwrite: true
-    #   contents:
-    #     local: config/flatcar_net/hosts
     - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
       contents: 
         inline: |

@@ -42,6 +42,14 @@ http:
       tls:
         certResolver: cloudflare
 
+    git-peach:
+      entryPoints:
+        - web-sec
+      rule: Host(`git.peach-ktq.dev`)
+      service: git-peach
+      tls:
+        certResolver: cloudflare
+
   services:
     grafana:
       loadBalancer:
@@ -51,3 +59,7 @@ http:
       loadBalancer:
         servers:
         - url: "http://172.20.5.15:9001"
+    git-peach:
+      loadBalancer:
+        servers:
+        - url: "http://172.20.20.1:3000"
