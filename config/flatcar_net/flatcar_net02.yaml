@@ -16,8 +16,11 @@ storage:
           Address=172.20.0.5/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
+    - path: /etc/hostname
+      contents:
+        inline: net02.honeblog.com
     - path: /home/flatcar/.coredns/config/Corefile
-      user: {name: k-dns}
-      group: {name: k-dns}
+      user: { name: k-dns }
+      group: { name: k-dns }
       contents:
         local: config/flatcar_net/coredns/Corefile02
