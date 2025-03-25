@@ -1,15 +1,3 @@
-# !Note:
-
-http:
-  routers:
-    dashboard01:
-      entryPoints:
-        - web-sec-private
-      rule: Host(`traefik01.honeblog.com`)
-      service: api@internal
-      tls:
-# !Note:
-
 http:
   routers:
     dashboard01:
