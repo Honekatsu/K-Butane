@@ -4,14 +4,19 @@ ignition:
   config:
     merge:
       - local: out/flatcar_base.json
-
+passwd:
+  users:
+    - name: gitea
+      groups: [docker]
+    - name: postgres
+      groups: [docker]
 systemd:
   units:
-    - name: init_harbor.service
+    - name: gitea.service
       enabled: true
       contents: |
         [Unit]
-        Description=Install Harbor
+        Description=run gitea
         Requires=systemd-sysupdate.service
         After=systemd-sysupdate.service
 
@@ -19,64 +24,59 @@ systemd:
         Type=oneshot
         RemainAfterExit=true
         WorkingDirectory=/home/flatcar
-        User=flatcar
-        Group=flatcar
-        ExecStartPre=-/usr/bin/mkdir /home/flatcar/.harbor/harbor_installer
-        ExecStartPre=-/usr/bin/tar xzvf /home/flatcar/.harbor/harbor-online-installer.tgz -C /home/flatcar/.harbor/harbor_installer --strip-components 1
-        ExecStart=/usr/bin/cp /home/flatcar/.harbor/harbor.yml /home/flatcar/.harbor/harbor_installer/harbor.yml
+        User=gitea
+        Group=gitea
+        ExecStartPre=-/usr/bin/docker stop gitea
+        ExecStartPre=-/usr/bin/docker rm gitea
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/others/gitea:latest-rootless
+        ExecStart=/usr/bin/docker run --rm --name gitea\
+          -v /home/flatcar/.gitea/data:/var/lib/gitea\
+          -v /home/flatcar/.gitea/config:/etc/gitea\
+          -v /etc/timezone:/etc/timeozone:ro\
+          -v /etc/localtime:/etc/localtime:ro\
+          -p 3000:3000\
+          -p 2222:2222\
+          --env-file /home/flatcar/.gitea/.env\
+          harbor.honeblog.com/others/gitea:latest-rootless
 
         [Install]
         WantedBy=multi-user.target
+    - name: gitea-postgres.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run postgres
+        Requires=systemd-sysupdate.service
+        After=systemd-sysupdate.service
 
+        [Service]
+        Type=oneshot
+        RemainAfterExit=true
+        WorkingDirectory=/home/flatcar
+        User=postgres
+        Group=postgress
+        ExecStartPre=-/usr/bin/docker stop gitea-postgress
+        ExecStartPre=-/usr/bin/docker rm gitea-postgress
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/database/postgress
+        ExecStart=/usr/bin/docker run --rm --name gitea-postgress\
+          -v /home/flatcar/.gitea-postgress/data:/var/lib/postgresql/data\
+          -p 5432:5432\
+          --env-file /home/flatcar/.postgress/.env\
+          harbor.honeblog.com/database/postgress:latest
+
+        [Install]
+        WantedBy=multi-user.target
 storage:
   directories:
-    - path: /home/flatcar/.harbor
-      user: { name: flatcar }
-      group: { name: flatcar }
-    - path: /home/flatcar/.harbor/certs
-      overwrite: false
-      user: { name: flatcar }
-      group: { name: flatcar }
-    - path: /home/flatcar/.harbor/data
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/secret/core
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/secret/registry
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/secret/cert
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/secret/keys/secretkey
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/job_logs
-      user: { id: 10000 }
-      group: { id: 10000 }
-    - path: /home/flatcar/.harbor/data/registry
-      overwrite: false
-      user: { id: 10000 }
-      group: { id: 10000 }
-      mode: 0700
-    - path: /home/flatcar/.harbor/data/database/pg15
-      overwrite: false
-      user: { id: 999 }
-      group: { id: 999 }
-    - path: /home/flatcar/.harbor/data/redis
-      overwrite: false
-      user: { id: 999 }
-      group: { id: 999 }
-    - path: /etc/docker/certs.d/harbor.honeblog.com
-      overwrite: false
-      user: { name: root }
-      group: { name: root }
+    - path: /home/flatcar/.gitea/data
+      user: { name: gitea }
+      group: { name: gitea }
+    - path: /home/flatcar/.gitea/config
+      user: { name: gitea }
+      group: { name: gitea }
+    - path: /home/flatcar/.gitea-postgress/data
+      user: { name: postgres }
+      group: { name: postgres }
   files:
     - path: /etc/systemd/network/static.network
       contents:
