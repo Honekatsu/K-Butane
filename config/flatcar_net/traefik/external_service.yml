@@ -41,13 +41,6 @@ http:
       service: minio-loki
       tls:
         certResolver: cloudflare
-    harbor:
-      entryPoints:
-        - web-sec-private
-      rule: Host(`harbor.honeblog.com`)
-      service: harbor
-      tls:
-        certResolver: cloudflare
 
   services:
     grafana:
@@ -58,7 +51,3 @@ http:
       loadBalancer:
         servers:
         - url: "http://172.20.5.15:9001"
-    harbor:
-      loadBalancer:
-        servers:
-        - url: "http://172.20.5.2:80"

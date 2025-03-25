@@ -9,7 +9,7 @@
     172.20.0.4 traefik01.honeblog.com
     172.20.0.5 traefik02.honeblog.com
 
-    172.20.0.5 harbor.honeblog.com
+    172.20.5.2 harbor.honeblog.com
     172.20.0.5 grafana.honeblog.com
     172.20.0.5 minio-loki.honeblog.com
 

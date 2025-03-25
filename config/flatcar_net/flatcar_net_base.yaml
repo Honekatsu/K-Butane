@@ -74,14 +74,14 @@ storage:
         inline: |
           [Resolve]
           DNS=172.20.0.1
-    - path: /etc/sysconfig/iptables
-      contents:
-        inline: |
+    # - path: /etc/sysconfig/iptables
+    #   contents:
+    #     inline: |
 
-    - path: /etc/hosts
-      overwrite: true
-      contents:
-        local: config/flatcar_net/hosts
+    # - path: /etc/hosts
+    #   overwrite: true
+    #   contents:
+    #     local: config/flatcar_net/hosts
     - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
       contents: 
         inline: |
