@@ -2,6 +2,7 @@ log:
   filePath: "/logs/traefik.log"
   maxSize: 50
   maxBackups: 3
+  level: DEBUG
 
 accessLog:
   filePath: "/logs/access.log"
@@ -36,10 +37,13 @@ providers:
 certificatesResolvers:
   cloudflare:
     acme:
+      email: test@example.com
       keyType: "EC384"
       storage: /acme/acme.json
       dnsChallenge:
         provider: cloudflare
-
+        resolvers:
+          - "1.1.1.1:53"
+          - "8.8.8.8:53"
       #caServer: https://acme-v02.api.letsencrypt.org/directory
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
