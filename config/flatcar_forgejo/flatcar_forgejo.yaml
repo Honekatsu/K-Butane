@@ -18,7 +18,7 @@ passwd:
 systemd:
   units:
     - name: forgejo.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=run forgejo
@@ -46,7 +46,7 @@ systemd:
         [Install]
         WantedBy=multi-user.target
     - name: postgres-forgejo.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=run postgres
@@ -70,7 +70,7 @@ systemd:
         [Install]
         WantedBy=multi-user.target
     - name: minio-forgejo.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=run minio
@@ -94,7 +94,7 @@ systemd:
         [Install]
         WantedBy=multi-user.target
     - name: lldap-forgejo.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=run lldap
