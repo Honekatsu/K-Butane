@@ -27,7 +27,10 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull coredns/coredns:latest
-        ExecStart=/usr/bin/docker run --rm --name coredns -v /home/flatcar/.coredns/config:/etc/coredns -p 53:53 -p 53:53/udp -p 9153:9153 coredns/coredns -conf /etc/coredns/Corefile
+        ExecStart=/usr/bin/docker run --rm --name coredns\
+          -v /home/flatcar/.coredns/config:/etc/coredns\
+          -p 53:53 -p 53:53/udp -p 9153:9153\
+          coredns/coredns -conf /etc/coredns/Corefile
 
         [Install]
         WantedBy=multi-user.target
@@ -62,11 +65,11 @@ systemd:
 storage:
   directories:
     - path: /home/flatcar/.traefik/logs
-      user: {name: k-reverse-proxy}
-      group: {name: k-reverse-proxy}
+      user: { name: k-reverse-proxy }
+      group: { name: k-reverse-proxy }
     - path: /home/flatcar/.traefik/acme
-      user: {name: k-reverse-proxy}
-      group: {name: k-reverse-proxy}  
+      user: { name: k-reverse-proxy }
+      group: { name: k-reverse-proxy }
   files:
     - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
@@ -78,17 +81,17 @@ storage:
     #   contents:
     #     inline: |
     - path: /etc/systemd/resolved.conf.d/stop_dns_stub_listener.conf
-      contents: 
+      contents:
         inline: |
           [Resolve]
           DNSStubListener=no
     - path: /home/flatcar/.traefik/config/traefik.yml
-      user: {name: k-reverse-proxy}
-      group: {name: k-reverse-proxy}
+      user: { name: k-reverse-proxy }
+      group: { name: k-reverse-proxy }
       contents:
         local: config/flatcar_net/traefik/traefik.yml
     - path: /home/flatcar/.traefik/config/external_service.yml
-      user: {name: k-reverse-proxy}
-      group: {name: k-reverse-proxy}
+      user: { name: k-reverse-proxy }
+      group: { name: k-reverse-proxy }
       contents:
         local: config/flatcar_net/traefik/external_service.yml

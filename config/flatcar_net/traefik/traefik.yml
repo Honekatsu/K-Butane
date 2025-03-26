@@ -23,7 +23,6 @@ entryPoints:
   metrics:
     address: :8082
 
-
 api:
   insecure: false
   dashboard: true
@@ -37,9 +36,10 @@ providers:
 certificatesResolvers:
   cloudflare:
     acme:
-      keyType: 'EC384'
+      keyType: "EC384"
       storage: /acme/acme.json
       dnsChallenge:
         provider: cloudflare
-      caServer: https://acme-v02.api.letsencrypt.org/directory
-      
+
+      #caServer: https://acme-v02.api.letsencrypt.org/directory
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
