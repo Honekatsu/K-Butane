@@ -8,11 +8,11 @@ passwd:
   users:
     - name: k-dns
       groups: [docker]
-    - name: k-reverse-proxy
+    - name: k-traefik
       groups: [docker]
 systemd:
   units:
-    - name: core_dns.service
+    - name: coredns.service
       enabled: true
       contents: |
         [Unit]
@@ -44,8 +44,8 @@ systemd:
 
         [Service]
         Type=simple
-        User=k-reverse-proxy
-        Group=k-reverse-proxy
+        User=k-traefik
+        Group=k-traefik
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull traefik:latest
@@ -65,11 +65,11 @@ systemd:
 storage:
   directories:
     - path: /home/flatcar/.traefik/logs
-      user: { name: k-reverse-proxy }
-      group: { name: k-reverse-proxy }
+      user: { name: k-traefik }
+      group: { name: k-traefik }
     - path: /home/flatcar/.traefik/acme
-      user: { name: k-reverse-proxy }
-      group: { name: k-reverse-proxy }
+      user: { name: k-traefik }
+      group: { name: k-traefik }
   files:
     - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
@@ -86,12 +86,12 @@ storage:
           [Resolve]
           DNSStubListener=no
     - path: /home/flatcar/.traefik/config/traefik.yml
-      user: { name: k-reverse-proxy }
-      group: { name: k-reverse-proxy }
+      user: { name: k-traefik }
+      group: { name: k-traefik }
       contents:
         local: config/flatcar_net/traefik/traefik.yml
     - path: /home/flatcar/.traefik/config/external_service.yml
-      user: { name: k-reverse-proxy }
-      group: { name: k-reverse-proxy }
+      user: { name: k-traefik }
+      group: { name: k-traefik }
       contents:
         local: config/flatcar_net/traefik/external_service.yml

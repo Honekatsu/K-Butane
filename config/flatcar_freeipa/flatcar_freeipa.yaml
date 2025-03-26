@@ -11,8 +11,6 @@ passwd:
       groups: [docker]
     - name: postgres
       groups: [docker]
-    - name: minio
-      groups: [docker]
 systemd:
   units:
     - name: forgejo.service
@@ -29,9 +27,9 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=forgejo
         Group=forgejo
-        ExecStartPre=-/usr/bin/docker stop forgejo
-        ExecStartPre=-/usr/bin/docker rm forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/others/forgejo:10
+        ExecStartPre=-/usr/bin/docker stop freeipa
+        ExecStartPre=-/usr/bin/docker rm freeipa
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/others/freeipa-server:almalinux-9
         ExecStart=/usr/bin/docker run --rm --name forgejo\
           -v /home/flatcar/.forgejo/data:/data\
           -v /etc/timezone:/etc/timeozone:ro\
@@ -67,30 +65,6 @@ systemd:
           harbor.honeblog.com/database/postgres:latest
         [Install]
         WantedBy=multi-user.target
-    - name: minio-forgejo.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=run minio
-        Requires=systemd-sysupdate.service
-        After=systemd-sysupdate.service
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        WorkingDirectory=/home/flatcar
-        User=minio
-        Group=minio
-        ExecStartPre=-/usr/bin/docker stop minio-forgejo
-        ExecStartPre=-/usr/bin/docker rm minio-forgejo
-        ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
-        ExecStartPre=/usr/bin/docker run --name minio-forgejo\
-         -p 9000:9000 -p 9001:9001\
-         -v /home/flatcar/K-Loki/minio-forgejo/data:/data\
-         --env-file /home/flatcar/.minio-forgejo/.env\
-         quay.io/minio/minio server /data --console-address ":9001"
-        [Install]
-        WantedBy=multi-user.target
 storage:
   directories:
     - path: /home/flatcar/.forgejo/data
@@ -99,9 +73,6 @@ storage:
     - path: /home/flatcar/.postgres-forgejo/data
       user: { name: postgres }
       group: { name: postgres }
-    - path: /home/flatcar/.minio-forgejo/data/forgejo
-      user: { name: minio }
-      group: { name: minio }
   files:
     - path: /etc/systemd/network/static.network
       contents:
