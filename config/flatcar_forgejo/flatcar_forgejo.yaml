@@ -13,6 +13,8 @@ passwd:
       groups: [docker]
     - name: minio
       groups: [docker]
+    - name: lldap
+      groups: [docker]
 systemd:
   units:
     - name: forgejo.service
@@ -84,11 +86,36 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop minio-forgejo
         ExecStartPre=-/usr/bin/docker rm minio-forgejo
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
-        ExecStartPre=/usr/bin/docker run --name minio-forgejo\
-         -p 9000:9000 -p 9001:9001\
-         -v /home/flatcar/K-Loki/minio-forgejo/data:/data\
-         --env-file /home/flatcar/.minio-forgejo/.env\
-         quay.io/minio/minio server /data --console-address ":9001"
+        ExecStart=/usr/bin/docker run --name minio-forgejo\
+          -p 9000:9000 -p 9001:9001\
+          -v /home/flatcar/.minio-forgejo/data:/data\
+          --env-file /home/flatcar/.minio-forgejo/.env\
+          quay.io/minio/minio server /data --console-address ":9001"
+        [Install]
+        WantedBy=multi-user.target
+    - name: lldap-forgejo.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run lldap
+        Requires=systemd-sysupdate.service
+        After=systemd-sysupdate.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=true
+        WorkingDirectory=/home/flatcar
+        User=lldap
+        Group=lldap
+        ExecStartPre=-/usr/bin/docker stop lldap-forgejo
+        ExecStartPre=-/usr/bin/docker rm lldap-forgejo
+        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/auth/lldap:stable
+        ExecStart=/usr/bin/docker run --name lldap-forgejo\
+          -p 3890:3890\
+          -p 17170:17170\
+          -v /home/flatcar/.lldap-forgejo/data:/data\
+          --env-file /home/flatcar/.lldap-forgejo/.env\
+          harbor.honeblog.com/auth/lldap:stable
         [Install]
         WantedBy=multi-user.target
 storage:
@@ -115,4 +142,4 @@ storage:
           NTP=172.20.0.1
     - path: /etc/hostname
       contents:
-        inline: git.peach-ktq.dev
+        inline: git.honeblog.com
