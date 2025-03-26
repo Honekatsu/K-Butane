@@ -143,3 +143,46 @@ storage:
     - path: /etc/hostname
       contents:
         inline: git.honeblog.com
+    - path: /home/flatcar/.forgejo/.env
+      user: { name: forgejo }
+      group: { name: forgejo }
+      mode: 0600
+      contents:
+        inline: |
+          USER_UID=1500
+          USER_GID=1500
+          FORGEJO__database__DB_TYPE=postgres
+          FORGEJO__database__HOST=172.20.20.1:5432
+          FORGEJO__database__NAME=
+          FORGEJO__database__USER=
+          FORGEJO__database__PASSWD=
+          FORGEJO__metrics__ENABLED=true
+    - path: /home/flatcar/.postgres-forgejo/.env
+      user: { name: postgres }
+      group: { name: postgres }
+      mode: 0600
+      contents:
+        inline: |
+          POSTGRES_USER=forgejo
+          POSTGRES_PASSWORD=
+          POSTGRES_DB=
+          TZ="Asia/Tokyo"
+    - path: /home/flatcar/.minio-forgejo/.env
+      user: { name: minio }
+      group: { name: minio }
+      mode: 0600
+      contents:
+        inline: |
+          MINIO_ROOT_USER=
+          MINIO_ROOT_PASSWORD=
+    - path: /home/flatcar/.lldap-forgejo/.env
+      user: { name: lldap }
+      group: { name: lldap }
+      mode: 0600
+      contents:
+        inline: |
+          TZ=Asia/Tokyo
+          LLDAP_JWT_SECRET=REPLACE_WITH_RANDOM
+          LLDAP_KEY_SEED=REPLACE_WITH_RANDOM
+          LLDAP_LDAP_BASE_DN=dc=example,dc=com
+          LLDAP_LDAP_USER_PASS=adminPas$word
