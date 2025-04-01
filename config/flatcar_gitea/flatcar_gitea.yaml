@@ -28,7 +28,7 @@ systemd:
         Group=gitea
         ExecStartPre=-/usr/bin/docker stop gitea
         ExecStartPre=-/usr/bin/docker rm gitea
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/others/gitea:latest-rootless
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/others/gitea:latest-rootless
         ExecStart=/usr/bin/docker run --rm --name gitea\
           -v /home/flatcar/.gitea/data:/var/lib/gitea\
           -v /home/flatcar/.gitea/config:/etc/gitea\
@@ -37,7 +37,7 @@ systemd:
           -p 3000:3000\
           -p 2222:2222\
           --env-file /home/flatcar/.gitea/.env\
-          harbor.honeblog.com/others/gitea:latest-rootless
+          harbor.reyokatsu.net/others/gitea:latest-rootless
 
         [Install]
         WantedBy=multi-user.target
@@ -57,12 +57,12 @@ systemd:
         Group=postgres
         ExecStartPre=-/usr/bin/docker stop gitea-postgres
         ExecStartPre=-/usr/bin/docker rm gitea-postgres
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/database/postgres
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres
         ExecStart=/usr/bin/docker run --rm --name gitea-postgres\
           -v /home/flatcar/.gitea-postgres/data:/var/lib/postgresql/data\
           -p 5432:5432\
           --env-file /home/flatcar/.gitea-postgres/.env\
-          harbor.honeblog.com/database/postgres:latest
+          harbor.reyokatsu.net/database/postgres:latest
         [Install]
         WantedBy=multi-user.target
 storage:

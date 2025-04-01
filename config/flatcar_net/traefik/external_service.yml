@@ -3,14 +3,14 @@ http:
     dashboard01:
       entryPoints:
         - web-sec-private
-      rule: Host(`traefik01.honeblog.com`)
+      rule: Host(`traefik01.reyokatsu.net`)
       service: api@internal
       tls:
         certResolver: cloudflare
     dashboard02:
       entryPoints:
         - web-sec-private
-      rule: Host(`traefik02.honeblog.com`)
+      rule: Host(`traefik02.reyokatsu.net`)
       service: api@internal
       tls:
         certResolver: cloudflare
@@ -18,14 +18,14 @@ http:
     grafana:
       entryPoints:
         - web-sec-private
-      rule: Host(`grafana.honeblog.com`)
+      rule: Host(`grafana.reyokatsu.net`)
       service: grafana
       tls:
         certResolver: cloudflare
     minio-loki:
       entryPoints:
         - web-sec-private
-      rule: Host(`minio-loki.honeblog.com`)
+      rule: Host(`minio-loki.reyokatsu.net`)
       service: minio-loki
       tls:
         certResolver: cloudflare
@@ -33,7 +33,7 @@ http:
     git-peach:
       entryPoints:
         - web-sec
-      rule: Host(`git.honeblog.com`)
+      rule: Host(`git.reyokatsu.net`)
       service: git-peach
       tls:
         certResolver: cloudflare

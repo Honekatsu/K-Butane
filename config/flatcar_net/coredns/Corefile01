@@ -6,13 +6,13 @@
   reload
   whoami
   hosts {
-    172.20.0.4 traefik01.honeblog.com
-    172.20.0.5 traefik02.honeblog.com
+    172.20.0.4 traefik01.reyokatsu.net
+    172.20.0.5 traefik02.reyokatsu.net
 
-    172.20.5.2 harbor.honeblog.com
-    172.20.0.4 grafana.honeblog.com
-    172.20.0.4 minio-loki.honeblog.com
-    172.20.0.4 git.honeblog.com
+    172.20.5.2 harbor.reyokatsu.net
+    172.20.0.4 grafana.reyokatsu.net
+    172.20.0.4 minio-loki.reyokatsu.net
+    172.20.0.4 git.reyokatsu.net
     
     fallthrough
   }

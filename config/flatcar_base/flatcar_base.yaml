@@ -117,7 +117,7 @@ storage:
               // }
             }
           }
-    - path: /etc/docker/certs.d/harbor.honeblog.com/ca.crt
+    - path: /etc/docker/certs.d/harbor.reyokatsu.net/ca.crt
       user: {name: flatcar}
       group: {name: flatcar}
       contents:

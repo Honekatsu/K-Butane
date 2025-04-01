@@ -29,7 +29,7 @@ systemd:
         Group=forgejo
         ExecStartPre=-/usr/bin/docker stop freeipa
         ExecStartPre=-/usr/bin/docker rm freeipa
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/others/freeipa-server:almalinux-9
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/others/freeipa-server:almalinux-9
         ExecStart=/usr/bin/docker run --rm --name forgejo\
           -v /home/flatcar/.forgejo/data:/data\
           -v /etc/timezone:/etc/timeozone:ro\
@@ -37,7 +37,7 @@ systemd:
           -p 3000:3000\
           -p 222:222\
           --env-file /home/flatcar/.forgejo/.env\
-          harbor.honeblog.com/others/forgejo:10
+          harbor.reyokatsu.net/others/forgejo:10
 
         [Install]
         WantedBy=multi-user.target
@@ -57,12 +57,12 @@ systemd:
         Group=postgres
         ExecStartPre=-/usr/bin/docker stop postgres-forgejo
         ExecStartPre=-/usr/bin/docker rm postgres-forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.honeblog.com/database/postgres
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres
         ExecStart=/usr/bin/docker run --rm --name postgres-forgejo\
           -v /home/flatcar/.postgres-forgejo/data:/var/lib/postgresql/data\
           -p 5432:5432\
           --env-file /home/flatcar/.postgres-forgejo/.env\
-          harbor.honeblog.com/database/postgres:latest
+          harbor.reyokatsu.net/database/postgres:latest
         [Install]
         WantedBy=multi-user.target
 storage:

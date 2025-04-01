@@ -84,7 +84,7 @@ storage:
       overwrite: false
       user: {id: 999}
       group: {id: 999}
-    - path: /etc/docker/certs.d/harbor.honeblog.com
+    - path: /etc/docker/certs.d/harbor.reyokatsu.net
       overwrite: false
       user: {name: root}
       group: {name: root}
@@ -101,7 +101,7 @@ storage:
           NTP=172.20.0.1
     - path: /etc/hostname
       contents:
-        inline: harbor.honeblog.com
+        inline: harbor.reyokatsu.net
     - path: /home/flatcar/.harbor/harbor-online-installer.tgz
       contents: 
         source: "https://github.com/goharbor/harbor/releases/download/v2.12.2/harbor-online-installer-v2.12.2.tgz"
