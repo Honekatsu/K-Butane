@@ -35,7 +35,7 @@ systemd:
         [Install]
         WantedBy=multi-user.target
     - name: traefik.service
-      enabled: true
+      enabled: false
       contents: |
         [Unit]
         Description=run Traefik
@@ -50,7 +50,7 @@ systemd:
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull traefik:latest
         ExecStart=/usr/bin/docker run --rm --name traefik\
-          --env-file /home/flatcar/.traefik/.traefik.env\
+          --env-file /home/flatcar/.traefik/.env\
           -v /home/flatcar/.traefik/config:/etc/traefik\
           -v /home/flatcar/.traefik/logs:/logs\
           -v /home/flatcar/.traefik/acme:/acme\
@@ -95,3 +95,11 @@ storage:
       group: { name: k-traefik }
       contents:
         local: config/flatcar_net/traefik/external_service.yml
+    - path: /home/flatcar/.traefik/.env
+      user: { name: k-traefik }
+      group: { name: k-traefik }
+      mode: 0600
+      contents: 
+        inline: |
+          CF_API_EMAIL=
+          CF_DNS_API_TOKEN=
