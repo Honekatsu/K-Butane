@@ -20,7 +20,11 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop minio_loki
         ExecStartPre=-/usr/bin/docker rm minio_loki
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
-        ExecStart=/usr/bin/sh /home/flatcar/K-Loki/minio_loki/minio_loki.sh
+        ExecStart=/usr/bin/docker run --name minio_loki\
+         --env-file /home/flatcar/K-Loki/minio_loki/.env\
+         -p 9000:9000 -p 9001:9001\
+         -v /home/flatcar/K-Loki/minio_loki/minio_data:/data\
+         quay.io/minio/minio server /data --console-address ":9001"
 
         [Install]
         WantedBy=multi-user.target
@@ -37,12 +41,18 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop loki
         ExecStartPre=-/usr/bin/docker rm loki
         ExecStartPre=/usr/bin/docker pull grafana/loki
-        ExecStart=/usr/bin/sh /home/flatcar/K-Loki/loki/loki.sh
+        ExecStart=/usr/bin/docker run --name loki\
+         --env-file /home/flatcar/K-Loki/minio_loki/.env\
+         -p 3100:3100\
+         -v /home/flatcar/K-Loki/loki/loki_config:/etc/loki\
+         grafana/loki -config.expand-env=true -config.file=/etc/loki/config.yaml
 
         [Install]
         WantedBy=multi-user.target
 
 storage:
+  directories:
+    - path: /home/flatcar/K-Loki/minio_loki/minio_data/loki
   files:
     - path: /etc/systemd/network/static.network
       contents:
@@ -54,25 +64,6 @@ storage:
           Address=172.20.5.15/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
-    - path: /home/flatcar/K-Loki/minio_loki/minio_loki.sh
-      contents:
-        inline: |
-          #!/usr/bin/env bash
-          set -e
-
-          source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
-
-          mkdir -p /home/flatcar/K-Loki/minio_loki/minio_data/loki
-          docker run --name minio_loki -p 9000:9000 -p 9001:9001 -v /home/flatcar/K-Loki/minio_loki/minio_data:/data -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} quay.io/minio/minio server /data --console-address ":9001"
-    - path: /home/flatcar/K-Loki/loki/loki.sh
-      contents:
-        inline: |
-          #!/usr/bin/env bash
-          set -e
-
-          source /home/flatcar/K-Loki/minio_loki/.minio_loki.env
-
-          docker run --name loki -e MINIO_ROOT_USER=${MINIO_ROOT_USER} -e MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} -p 3100:3100 -v /home/flatcar/K-Loki/loki/loki_config:/etc/loki grafana/loki -config.expand-env=true -config.file=/etc/loki/config.yaml
     - path: "/home/flatcar/K-Loki/loki/loki_config/config.yaml"
       contents:
         source: "https://raw.githubusercontent.com/Honekatsu/K-Loki/refs/heads/main/loki-config.yaml"
