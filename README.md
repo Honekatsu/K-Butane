@@ -11,7 +11,7 @@ sh create_flatcar.sh
 ### Flatcar_net(CoreDNS, Traefik, HAProxy)
 
 ```bash
-sh create_flatcar_forgejo.sh
+sh create_flatcar_net.sh
 ```
 
 ### Flatcar_loki(Loki, MiniO)
