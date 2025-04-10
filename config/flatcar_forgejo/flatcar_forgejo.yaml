@@ -39,7 +39,7 @@ systemd:
           -v /etc/timezone:/etc/timeozone:ro\
           -v /etc/localtime:/etc/localtime:ro\
           -p 3000:3000\
-          -p 222:222\
+          -p 222:22\
           --env-file /home/flatcar/.forgejo/.env\
           harbor.reyokatsu.net/others/forgejo:10
 
@@ -161,7 +161,7 @@ storage:
           FORGEJO__database__DB_TYPE=postgres
           FORGEJO__database__HOST=172.20.20.1:5432
           FORGEJO__database__NAME=forgejo
-          FORGEJO__database__USER=forgejo
+          FORGEJO__database__USER=
           FORGEJO__database__PASSWD=
           FORGEJO__metrics__ENABLED=true
           FORGEJO__storage__STORAGE_TYPE=minio
@@ -175,9 +175,9 @@ storage:
       mode: 0600
       contents:
         inline: |
-          POSTGRES_USER=forgejo
+          POSTGRES_USER=
           POSTGRES_PASSWORD=
-          POSTGRES_DB=
+          POSTGRES_DB=forgejo
           TZ="Asia/Tokyo"
     - path: /home/flatcar/.minio-forgejo/.env
       user: { name: minio }
@@ -196,5 +196,5 @@ storage:
           TZ=Asia/Tokyo
           LLDAP_JWT_SECRET=
           LLDAP_KEY_SEED=
-          LLDAP_LDAP_BASE_DN=dc=example,dc=com
+          LLDAP_LDAP_BASE_DN=dc=peach-ktq,dc=dev
           LLDAP_LDAP_USER_PASS=
