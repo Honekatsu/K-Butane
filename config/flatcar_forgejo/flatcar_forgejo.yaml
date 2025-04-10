@@ -151,12 +151,23 @@ storage:
         inline: |
           USER_UID=1500
           USER_GID=1500
+          FORGEJO__server_DOMAIN=git.reyokatsu.net
+          FORGEJO__server_SSH_DOMAIN=git.reyokatsu.net
+          FORGEJO__server_ROOT_URL=https://git.reyokatsu.net/
+          FORGEJO__server_HTTP_PORT=3000
+          FORGEJO__server_SSH_PORT=222
+          FORGEJO__server_SSH_LISTEN_PORT=22
           FORGEJO__database__DB_TYPE=postgres
           FORGEJO__database__HOST=172.20.20.1:5432
-          FORGEJO__database__NAME=
-          FORGEJO__database__USER=
+          FORGEJO__database__NAME=forgejo
+          FORGEJO__database__USER=forgejo
           FORGEJO__database__PASSWD=
           FORGEJO__metrics__ENABLED=true
+          FORGEJO__storage__STORAGE_TYPE=minio
+          FORGEJO__storage__MINIO_ENDPOINT=172.20.20.1:9000
+          FORGEJO__storage__MINIO_ACCESS_KEY_ID=
+          FORGEJO__storage__MINIO_SECRET_ACCESS_KEY=
+          FORGEJO__storage__MINIO_BUCKET=forgejo
     - path: /home/flatcar/.postgres-forgejo/.env
       user: { name: postgres }
       group: { name: postgres }
