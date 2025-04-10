@@ -8,7 +8,13 @@
 sh create_flatcar.sh
 ```
 
-### Flatcar_loki(Loki & MiniO)
+### Flatcar_net(CoreDNS, Traefik, HAProxy)
+
+```bash
+sh create_flatcar_forgejo.sh
+```
+
+### Flatcar_loki(Loki, MiniO)
 
 ```bash
 sh create_flatcar_loki.sh
@@ -24,7 +30,7 @@ sh create_flatcar_harbor.sh
 
 証明書の生成周りはObsidian参照(Private)
 
-### Flatcar_forgejo(Gitサーバー)
+### Flatcar_forgejo(Gitサーバー Forgejo, PostgreSQL, MinIO, LLDAP)
 
 ```bash
 sh create_flatcar_forgejo.sh
