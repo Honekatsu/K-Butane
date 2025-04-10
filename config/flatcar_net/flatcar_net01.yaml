@@ -21,7 +21,7 @@ storage:
       contents:
         inline: net01.reyokatsu.net
     - path: /home/flatcar/.coredns/config/Corefile
-      user: { name: k-dns }
-      group: { name: k-dns }
+      user: { name: coredns }
+      group: { name: coredns }
       contents:
         local: config/flatcar_net/coredns/Corefile01
