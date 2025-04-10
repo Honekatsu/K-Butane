@@ -6,9 +6,11 @@ ignition:
       - local: out/flatcar_base.json
 passwd:
   users:
-    - name: k-dns
+    - name: coredns
       groups: [docker]
-    - name: k-traefik
+    - name: traefik
+      groups: [docker]
+    - name: haproxy
       groups: [docker]
 systemd:
   units:
@@ -22,8 +24,8 @@ systemd:
 
         [Service]
         Type=simple
-        User=k-dns
-        Group=k-dns
+        User=coredns
+        Group=coredns
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull coredns/coredns:latest
@@ -44,8 +46,8 @@ systemd:
 
         [Service]
         Type=simple
-        User=k-traefik
-        Group=k-traefik
+        User=traefik
+        Group=traefik
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull traefik:latest
@@ -61,15 +63,37 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: haproxy.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=run HAProxy
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=simple
+        User=haproxy
+        Group=haproxy
+        ExecStartPre=-/usr/bin/docker stop haproxy
+        ExecStartPre=-/usr/bin/docker rm haproxy
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/network/haproxy:3.2-dev7-alpine
+        ExecStart=/usr/bin/docker run --rm --name haproxy\
+          -v /home/flatcar/.haproxy/config:/usr/local/etc/haproxy:ro\
+          -p 222:222\
+          harbor.reyokatsu.net/network/haproxy:3.2-dev7-alpine
+
+        [Install]
+        WantedBy=multi-user.target
 
 storage:
   directories:
     - path: /home/flatcar/.traefik/logs
-      user: { name: k-traefik }
-      group: { name: k-traefik }
+      user: { name: traefik }
+      group: { name: traefik }
     - path: /home/flatcar/.traefik/acme
-      user: { name: k-traefik }
-      group: { name: k-traefik }
+      user: { name: traefik }
+      group: { name: traefik }
   files:
     - path: /etc/systemd/resolved.conf.d/10-DNS-override.conf
       overwrite: true
@@ -86,20 +110,25 @@ storage:
           [Resolve]
           DNSStubListener=no
     - path: /home/flatcar/.traefik/config/traefik.yml
-      user: { name: k-traefik }
-      group: { name: k-traefik }
+      user: { name: traefik }
+      group: { name: traefik }
       contents:
         local: config/flatcar_net/traefik/traefik.yml
     - path: /home/flatcar/.traefik/config/external_service.yml
-      user: { name: k-traefik }
-      group: { name: k-traefik }
+      user: { name: traefik }
+      group: { name: traefik }
       contents:
         local: config/flatcar_net/traefik/external_service.yml
     - path: /home/flatcar/.traefik/.env
-      user: { name: k-traefik }
-      group: { name: k-traefik }
+      user: { name: traefik }
+      group: { name: traefik }
       mode: 0600
       contents: 
         inline: |
           CF_API_EMAIL=
           CF_DNS_API_TOKEN=
+    - path: /home/flatcar/.haproxy/config/haproxy.cfg
+      user: { name: haproxy }
+      group: { name: haproxy }
+      contents:
+        local: config/flatcar_net/haproxy/haproxy.cfg
