@@ -17,6 +17,7 @@ storage:
           Gateway=172.20.0.1
           NTP=172.20.0.1
     - path: /etc/hostname
+      overwrite: true
       contents:
         inline: net01.reyokatsu.net
     - path: /home/flatcar/.coredns/config/Corefile
