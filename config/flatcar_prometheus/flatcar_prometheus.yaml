@@ -62,14 +62,13 @@ systemd:
 
         [Service]
         Type=simple
-        RemainAfterExit=true
         WorkingDirectory=/home/flatcar
         User=prometheus
         Group=prometheus
         ExecStartPre=-/usr/bin/docker stop prometheus
         ExecStartPre=-/usr/bin/docker rm prometheus
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/management/prometheus:latest
-        ExecStartPre=/usr/bin/sh /home/flatcar/.prometheus/create_config.sh
+        ExecStartPre=-/usr/bin/sh /home/flatcar/.prometheus/create_config.sh
         ExecStart=/usr/bin/docker run --name prometheus\
          -p 9090:9090\
          -v /home/flatcar/.prometheus/data:/data\
