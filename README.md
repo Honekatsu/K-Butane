@@ -14,7 +14,7 @@ sh create_flatcar.sh
 sh create_flatcar_net.sh
 ```
 
-### flatcar_prometheus(Loki, MiniO)
+### flatcar_prometheus(Prometheus, Grafana, Loki, MiniO)
 
 ```bash
 sh create_flatcar_prometheus.sh
