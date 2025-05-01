@@ -73,9 +73,10 @@ systemd:
         ExecStartPre=-/usr/bin/sh /home/flatcar/.prometheus/create_config.sh
         ExecStart=/usr/bin/docker run --name prometheus\
          -p 9090:9090\
-         -v /home/flatcar/.prometheus/data:/data\
+         -v /home/flatcar/.prometheus/config:/config\
+         -v /home/flatcar/.prometheus/data:/prometheus\
          harbor.reyokatsu.net/management/prometheus:latest\
-         --config.file=/data/prometheus.yml
+         --config.file=/config/prometheus.yml
         [Install]
         WantedBy=multi-user.target
     - name: grafana.service
@@ -105,11 +106,15 @@ storage:
   directories:
     - path: /home/flatcar/K-Loki/minio_loki/minio_data/loki
     - path: /home/flatcar/.prometheus/data
+      user: { id: 65534 }
+      group: { id: 65534 }
+      mode: 0700
+    - path: /home/flatcar/.prometheus/config
+      user: { name: prometheus }
+      group: { name: prometheus }
+    - path: /home/flatcar/.grafana/data
       user: { id: 472 }
       group: { id: 472 }
-    - path: /home/flatcar/.grafana/data
-      user: { name: grafana }
-      group: { name: grafana }
   files:
     - path: /etc/systemd/network/static.network
       contents:
