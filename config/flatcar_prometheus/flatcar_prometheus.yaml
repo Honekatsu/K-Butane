@@ -8,6 +8,8 @@ passwd:
   users:
     - name: prometheus
       groups: [prometheus]
+    - name: grafana
+      groups: [grafana]
 systemd:
   units:
     - name: minio_loki.service
