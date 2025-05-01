@@ -14,10 +14,10 @@ sh create_flatcar.sh
 sh create_flatcar_net.sh
 ```
 
-### Flatcar_loki(Loki, MiniO)
+### flatcar_prometheus(Loki, MiniO)
 
 ```bash
-sh create_flatcar_loki.sh
+sh create_flatcar_prometheus.sh
 ```
 
 [Loki設定ファイル](https://github.com/Honekatsu/K-Loki)

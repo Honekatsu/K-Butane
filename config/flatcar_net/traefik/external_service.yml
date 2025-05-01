@@ -42,7 +42,7 @@ http:
     grafana:
       loadBalancer:
         servers:
-          - url: "http://172.20.5.1:3000"
+          - url: "http://172.20.5.15:3000"
     minio-loki:
       loadBalancer:
         servers:
