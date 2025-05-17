@@ -1,0 +1,113 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: out/flatcar_base.json
+passwd:
+  users:
+    - name: couchdb-obsidian
+      groups: [docker]
+    - name: cloudflared-obsidian
+      groups: [docker]
+systemd:
+  units:
+    - name: couchdb-obsidian.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=run couchdb
+        Requires=systemd-sysupdate.service
+        After=systemd-sysupdate.service
+
+        [Service]
+        Type=simple
+        WorkingDirectory=/home/flatcar
+        User=couchdb-obsidian
+        Group=couchdb-obsidian
+        ExecStartPre=-/usr/bin/docker stop couchdb-obsidian
+        ExecStartPre=-/usr/bin/docker rm couchdb-obsidian
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/db/couchdb:3
+        ExecStart=/usr/bin/docker run --name couchdb-obsidian\
+          -p 5984:5984\
+          -v /home/flatcar/couchdb-obsidian/data:/opt/couchdb/data\
+          -v /home/flatcar/couchdb-obsidian/config:/opt/couchdb/etc/local.d\
+          --env-file /home/flatcar/couchdb/.env\
+          harbor.reyokatsu.net/db/couchdb:3
+        Restart=always
+        RestartSec=10
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: cloudflared-obsidian.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=run cloudflared
+        Requires=systemd-sysupdate.service
+        After=systemd-sysupdate.service
+
+        [Service]
+        Type=simple
+        WorkingDirectory=/home/flatcar
+        User=couchdb-obsidian
+        Group=couchdb-obsidian
+        ExecStartPre=-/usr/bin/docker stop cloudflared-obsidian
+        ExecStartPre=-/usr/bin/docker rm cloudflared-obsidian
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/network/cloudflared:latest
+        ExecStart=/usr/bin/docker run --name cloudflared-obsidian\
+          --env-file /home/flatcar/cloudflared-obsidian/.env\
+          harbor.reyokatsu.net/network/cloudflared:latest tunnel run
+
+        Restart=always
+        RestartSec=10
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  directories:
+    - path: /home/flatcar/couchdb/data
+      user: { name: couchdb-obsidian }
+      group: { name: couchdb-obsidian }
+  files:
+    - path: /etc/systemd/network/static.network
+      contents:
+        inline: |
+          [Match]
+          Name=eth0
+
+          [Network]
+          Address=172.20.6.1/16
+          Gateway=172.20.0.1
+          NTP=172.20.0.1
+    - path: /etc/hostname
+      contents:
+        inline: db01.reyokatsu.net
+    - path: /home/flatcar/cloudflared-obsidian/.env
+      user: { name: cloudflared-obsidian }
+      group: { name: cloudflared-obsidian }
+      mode: 0600
+      contents:
+        inline: |
+          TUNNEL_TOKEN=
+          TUNNEL_NAME=obsidian
+          TUNNEL_URL=http://localhost:5984
+          TUNNEL_HOSTNAME=db01.reyokatsu.net
+          TUNNEL_PORT=443
+          TUNNEL_METRICS="0.0.0.0:60123"
+    - path: /home/flatcar/couchdb-obsidian/.env
+      user: { name: couchdb-obsidian }
+      group: { name: couchdb-obsidian }
+      mode: 0600
+      contents:
+        inline: |
+          COUCHDB_USER=
+          COUCHDB_PASSWORD=
+          TZ="Asia/Tokyo"
+    - path: /home/flatcar/couchdb-obsidian/config/default.ini
+      user: { name: couchdb-obsidian }
+      group: { name: couchdb-obsidian }
+      mode: 0600
+      contents:
+        local: config/flatcar_db01/couchdb-obsidian/default.ini

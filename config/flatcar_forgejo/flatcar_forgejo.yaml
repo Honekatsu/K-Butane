@@ -27,7 +27,8 @@ systemd:
 
         [Service]
         Type=simple
-        RemainAfterExit=true
+        Restart=always
+        RestartSec=10
         WorkingDirectory=/home/flatcar
         User=forgejo
         Group=forgejo
@@ -55,7 +56,8 @@ systemd:
 
         [Service]
         Type=simple
-        RemainAfterExit=true
+        Restart=always
+        RestartSec=10
         WorkingDirectory=/home/flatcar
         User=postgres
         Group=postgres
@@ -79,7 +81,8 @@ systemd:
 
         [Service]
         Type=simple
-        RemainAfterExit=true
+        Restart=always
+        RestartSec=10
         WorkingDirectory=/home/flatcar
         User=minio
         Group=minio
@@ -91,6 +94,7 @@ systemd:
           -v /home/flatcar/.minio-forgejo/data:/data\
           --env-file /home/flatcar/.minio-forgejo/.env\
           quay.io/minio/minio server /data --console-address ":9001"
+
         [Install]
         WantedBy=multi-user.target
     - name: lldap-forgejo.service
