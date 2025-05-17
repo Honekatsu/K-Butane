@@ -38,14 +38,10 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: Network
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
     static_configs:
-      - targets: ['172.20.0.20:9100']
+      - targets: ['172.20.0.4:9100','172.20.0.5:9100','172.20.0.20:9100']
 
   - job_name: DNS
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
     static_configs:
       - targets: ['172.20.0.4:9153','172.20.0.5:9153']
   
@@ -58,6 +54,10 @@ scrape_configs:
     # machine by default.
     static_configs:
       - targets: ['localhost:9100','172.20.5.15:9100','172.20.5.5:9100']
+
+  - job_name: git
+    static_configs:
+      - targets: ['172.20.20.1:9100']
 
   - job_name: Desktop_VM
     # If prometheus-node-exporter is installed, grab stats about the local

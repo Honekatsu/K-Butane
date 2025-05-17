@@ -32,7 +32,7 @@ systemd:
           -p 5984:5984\
           -v /home/flatcar/couchdb-obsidian/data:/opt/couchdb/data\
           -v /home/flatcar/couchdb-obsidian/config:/opt/couchdb/etc/local.d\
-          --env-file /home/flatcar/couchdb/.env\
+          --env-file /home/flatcar/couchdb-obsidian/.env\
           harbor.reyokatsu.net/db/couchdb:3
         Restart=always
         RestartSec=10
@@ -50,8 +50,8 @@ systemd:
         [Service]
         Type=simple
         WorkingDirectory=/home/flatcar
-        User=couchdb-obsidian
-        Group=couchdb-obsidian
+        User=cloudflared-obsidian
+        Group=cloudflared-obsidian
         ExecStartPre=-/usr/bin/docker stop cloudflared-obsidian
         ExecStartPre=-/usr/bin/docker rm cloudflared-obsidian
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/network/cloudflared:latest
@@ -67,7 +67,7 @@ systemd:
 
 storage:
   directories:
-    - path: /home/flatcar/couchdb/data
+    - path: /home/flatcar/couchdb-obsidian/data
       user: { name: couchdb-obsidian }
       group: { name: couchdb-obsidian }
   files:
@@ -91,11 +91,7 @@ storage:
       contents:
         inline: |
           TUNNEL_TOKEN=
-          TUNNEL_NAME=obsidian
-          TUNNEL_URL=http://localhost:5984
-          TUNNEL_HOSTNAME=db01.reyokatsu.net
-          TUNNEL_PORT=443
-          TUNNEL_METRICS="0.0.0.0:60123"
+          TUNNEL_METRICS=0.0.0.0:60123
     - path: /home/flatcar/couchdb-obsidian/.env
       user: { name: couchdb-obsidian }
       group: { name: couchdb-obsidian }
