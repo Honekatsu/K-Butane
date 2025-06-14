@@ -53,7 +53,7 @@ scrape_configs:
     # If prometheus-node-exporter is installed, grab stats about the local
     # machine by default.
     static_configs:
-      - targets: ['localhost:9100','172.20.5.15:9100','172.20.5.5:9100']
+      - targets: ['localhost:9100','172.20.5.11:9100','172.20.5.15:9100','172.20.5.5:9100']
 
   - job_name: git
     static_configs:

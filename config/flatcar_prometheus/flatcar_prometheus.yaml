@@ -8,6 +8,8 @@ passwd:
   users:
     - name: prometheus
       groups: [prometheus]
+    - name: loki
+      groups: [loki]
     - name: grafana
       groups: [grafana]
 systemd:
@@ -127,8 +129,10 @@ storage:
           Gateway=172.20.0.1
           NTP=172.20.0.1
     - path: "/home/flatcar/K-Loki/loki/loki_config/config.yaml"
+      user: { name: loki }
+      group: { name: loki }
       contents:
-        source: "https://raw.githubusercontent.com/Honekatsu/K-Loki/refs/heads/main/loki-config.yaml"
+        local: "config/flatcar_prometheus/loki/loki-config.yaml"
     - path: "/home/flatcar/.prometheus/create_config.sh"
       user: { name: prometheus }
       group: { name: prometheus }
