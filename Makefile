@@ -20,7 +20,7 @@ out/flatcar.json : config/flatcar_docker/flatcar.yaml $(FC_base_out)
 
 # Flatcar prometheus
 FC_prometheus_path = config/flatcar_prometheus
-out/flatcar_prometheus.json : $(FC_prometheus_path)/flatcar_prometheus.yaml $(FC_base_out) $(FC_prometheus_path)/prometheus/create_config.sh $(FC_prometheus_path)/prometheus/prometheus.yml.template
+out/flatcar_prometheus.json : $(FC_prometheus_path)/flatcar_prometheus.yaml $(FC_base_out) $(FC_prometheus_path)/prometheus/create_config.sh $(FC_prometheus_path)/prometheus/prometheus.yml.template $(FC_prometheus_path)/loki/loki-config.yaml
 	$(BUTANE_CMD) < $< > $@
 	@echo "✅ create $@"
 

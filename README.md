@@ -27,8 +27,6 @@ make out/flatcar_net02.json
 make out/flatcar_prometheus.json
 ```
 
-[Loki設定ファイル](https://github.com/Honekatsu/K-Loki)
-
 ### Flatcar_harbor(Docker Registry)
 
 ```bash
