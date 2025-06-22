@@ -24,13 +24,15 @@ systemd:
 
         [Service]
         Type=simple
+        User=minio_loki
+        Group=loki
         ExecStartPre=-/usr/bin/docker stop minio_loki
         ExecStartPre=-/usr/bin/docker rm minio_loki
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
         ExecStart=/usr/bin/docker run --name minio_loki\
-         --env-file /home/flatcar/K-Loki/minio_loki/.env\
+         --env-file /home/flatcar/.loki/minio_loki/.env\
          -p 9000:9000 -p 9001:9001\
-         -v /home/flatcar/K-Loki/minio_loki/minio_data:/data\
+         -v /home/flatcar/.loki/minio_loki/minio_data:/data\
          quay.io/minio/minio server /data --console-address ":9001"
 
         [Install]
@@ -45,13 +47,15 @@ systemd:
 
         [Service]
         Type=simple
+        User=loki
+        Group=loki
         ExecStartPre=-/usr/bin/docker stop loki
         ExecStartPre=-/usr/bin/docker rm loki
         ExecStartPre=/usr/bin/docker pull grafana/loki
         ExecStart=/usr/bin/docker run --name loki\
-         --env-file /home/flatcar/K-Loki/minio_loki/.env\
+         --env-file /home/flatcar/.loki/minio_loki/.env\
          -p 3100:3100\
-         -v /home/flatcar/K-Loki/loki/loki_config:/etc/loki\
+         -v /home/flatcar/.loki/loki/loki_config:/etc/loki\
          grafana/loki -config.expand-env=true -config.file=/etc/loki/config.yaml
 
         [Install]
@@ -106,7 +110,7 @@ systemd:
 
 storage:
   directories:
-    - path: /home/flatcar/K-Loki/minio_loki/minio_data/loki
+    - path: /home/flatcar/.loki/minio_loki/minio_data/loki
     - path: /home/flatcar/.prometheus/data
       user: { id: 65534 }
       group: { id: 65534 }
@@ -128,7 +132,7 @@ storage:
           Address=172.20.5.15/16
           Gateway=172.20.0.1
           NTP=172.20.0.1
-    - path: "/home/flatcar/K-Loki/loki/loki_config/config.yaml"
+    - path: "/home/flatcar/.loki/loki/loki_config/config.yaml"
       user: { name: loki }
       group: { name: loki }
       contents:
@@ -143,10 +147,3 @@ storage:
       group: { name: prometheus }
       contents:
         local: "config/flatcar_prometheus/prometheus/prometheus.yml.template"
-    - path: "/home/flatcar/.prometheus/.env"
-      user: { name: prometheus }
-      group: { name: prometheus }
-      contents:
-        inline: |
-          PX3_01_USERNAME=
-          PX3_01_PASSWORD=
