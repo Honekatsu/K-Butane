@@ -8,7 +8,7 @@ all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flat
 # Flatcar base configuration
 FC_base_path = config/flatcar_base
 FC_base_out = out/flatcar_base.json
-out/flatcar_base.json : $(FC_base_path)/flatcar_base.yaml $(FC_base_path)/authorized_keys $(FC_base_path)/ca.crt
+out/flatcar_base.json : $(FC_base_path)/flatcar_base.yaml $(FC_base_path)/authorized_keys $(FC_base_path)/docker/ca.crt $(FC_base_path)/docker/daemon.json
 	$(BUTANE_CMD) < $< > $@
 	@echo "✅ create $@"
 
