@@ -142,7 +142,7 @@ storage:
       group: { name: prometheus }
       contents:
         local: "config/flatcar_prometheus/prometheus/create_config.sh"
-    - path: "/home/flatcar/.prometheus/data/prometheus.yml.template"
+    - path: "/home/flatcar/.prometheus/prometheus.yml.template"
       user: { name: prometheus }
       group: { name: prometheus }
       contents:
