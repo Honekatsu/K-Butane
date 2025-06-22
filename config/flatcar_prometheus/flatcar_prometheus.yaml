@@ -7,11 +7,11 @@ ignition:
 passwd:
   users:
     - name: prometheus
-      groups: [prometheus]
+      groups: [docker]
     - name: loki
-      groups: [loki]
+      groups: [docker]
     - name: grafana
-      groups: [grafana]
+      groups: [docker]
 systemd:
   units:
     - name: minio_loki.service
