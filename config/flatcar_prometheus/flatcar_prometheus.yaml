@@ -24,7 +24,7 @@ systemd:
 
         [Service]
         Type=simple
-        User=minio_loki
+        User=loki
         Group=loki
         ExecStartPre=-/usr/bin/docker stop minio_loki
         ExecStartPre=-/usr/bin/docker rm minio_loki
