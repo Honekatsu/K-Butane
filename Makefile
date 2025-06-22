@@ -3,7 +3,11 @@ BUTANE_CMD = docker run -i --rm -v "${PWD}":/pwd quay.io/coreos/butane:release -
 #targets
 all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flatcar_net_base.json out/flatcar_net01.json out/flatcar_net02.json out/flatcar_forgejo.json out/flatcar_db01.json out/flatcar_harbor.json
 
-.PHONY: all
+clean:
+	rm -f out/*.json
+	@echo "✅ cleaned up generated files"
+
+.PHONY: all clean
 
 # Flatcar base configuration
 FC_base_path = config/flatcar_base
