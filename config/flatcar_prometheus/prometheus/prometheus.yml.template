@@ -34,12 +34,13 @@ scrape_configs:
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
 
-    static_configs:
-      - targets: ['localhost:9090']
-
   - job_name: Network
     static_configs:
-      - targets: ['172.20.0.4:9100','172.20.0.5:9100','172.20.0.20:9100']
+      - targets: ['172.20.0.4:9100','172.20.0.5:9100']
+
+  - job_name: VPN
+    static_configs:
+      - targets: ['172.20.0.20:9100']
 
   - job_name: DNS
     static_configs:
@@ -49,62 +50,63 @@ scrape_configs:
     static_configs:
       - targets: ['172.20.0.4:8082','172.20.0.5:8082']
 
-  - job_name: management_VM
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
+  - job_name: apt-cache
     static_configs:
-      - targets: ['localhost:9100','172.20.5.15:9100','172.20.5.5:9100']
+      - targets: ['172.20.5.5:9100']
+
+  - job_name: Prometheus
+    static_configs:
+      - targets: ['localhost:9100']
 
   - job_name: git
     static_configs:
       - targets: ['172.20.20.1:9100']
 
   - job_name: Desktop_VM
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
     static_configs:
       - targets: ['172.20.2.0:9100']
 
   - job_name: ARK_VM
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
     static_configs:
       - targets: ['172.20.10.1:9100']
 
   - job_name: k8s01_VM
-      # If prometheus-node-exporter is installed, grab stats about the local
-      # machine by default.
     static_configs:
       - targets: ['172.20.8.1:9100','172.20.8.2:9100','172.20.8.11:9100','172.20.8.12:9100','172.20.8.13:9100','172.20.8.21:9100','172.20.8.22:9100','172.20.8.23:9100']
 
-  - job_name: Minecraft_VM
-      # If prometheus-node-exporter is installed, grab stats about the local
-      # machine by default.
+  - job_name: Minecraft_HA_proxy
     static_configs:
-      - targets: ['172.20.10.12:9100','172.20.10.13:9100','172.20.10.14:9100','172.20.10.16:9100','172.20.10.20:9100','172.20.10.22:9100','172.20.10.35:9100']
+      - targets: ['172.20.10.12:9100','172.20.10.13:9100']
+
+  - job_name: Minecraft_proxy
+    static_configs:
+      - targets: ['172.20.10.14:9100','172.20.10.20:9100']
+
+  - job_name: Minecraft_server
+    static_configs:
+      - targets: ['172.20.10.16:9100','172.20.10.22:9100','172.20.10.35:9100']
+
+  - job_name: Harbor
+    static_configs:
+      - targets: ['172.20.5.2:9100']
 
   - job_name: Flatcar_VM
     static_configs:
       - targets: ['172.20.5.14:9100']
 
   - job_name: Flatcar_DB
-      # If prometheus-node-exporter is installed, grab stats about the local
-      # machine by default.
     static_configs:
       - targets: ['172.20.6.1:9100']
 
   - job_name: node
-      # If prometheus-node-exporter is installed, grab stats about the local
-      # machine by default.
     static_configs:
       - targets: ['172.20.1.1:9100']
 
   - job_name: RHEL
     static_configs:
       - targets: ["172.20.5.10:9100"]
+
   - job_name: PDU
-      # If prometheus-node-exporter is installed, grab stats about the local
-      # machine by default.
     scheme: https
     tls_config:
       insecure_skip_verify: true
