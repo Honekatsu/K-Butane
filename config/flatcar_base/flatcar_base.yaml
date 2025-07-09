@@ -80,7 +80,11 @@ systemd:
         ExecStartPre=-/usr/bin/docker stop node_exporter
         ExecStartPre=-/usr/bin/docker rm node_exporter
         ExecStartPre=/usr/bin/docker pull prom/node-exporter
-        ExecStart=/usr/bin/docker run --rm --name node_exp -p 9100:9100 prom/node-exporter
+        ExecStart=/usr/bin/docker run --rm --name node_exp\
+          -p 9100:9100\
+          --pid=host\
+          -v /:/host:ro,rslave\
+          prom/node-exporter
 
         [Install]
         WantedBy=multi-user.target
