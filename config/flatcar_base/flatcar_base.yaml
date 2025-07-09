@@ -25,6 +25,35 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+    - name: docker-prune.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=Prune unused Docker images
+        Requires=docker.service
+        After=docker.service
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/docker image prune -a -f --filter "until=24h"
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: docker-prune.timer
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Run docker-prune.service weekly
+
+        [Timer]
+        OnCalendar=Sun *-*-* 04:00:00
+        # 負荷分散のため、実際の実行時間をずらすことを許可する
+        AccuracySec=2h
+        # 実行できなかった場合、次回起動時に実行する
+        Persistent=true
+
+        [Install]
+        WantedBy=timers.target
     - name: set-timezone.service
       enabled: true
       contents: |
