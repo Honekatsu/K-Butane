@@ -71,8 +71,11 @@ systemd:
         [Service]
         Type=simple
         WorkingDirectory=/home/flatcar
+        Restart=on-failure
+        RestartSec=30s
         User=prometheus
         Group=prometheus
+
         ExecStartPre=-/usr/bin/docker stop prometheus
         ExecStartPre=-/usr/bin/docker rm prometheus
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/management/prometheus:latest
@@ -96,8 +99,11 @@ systemd:
         [Service]
         Type=simple
         WorkingDirectory=/home/flatcar
+        Restart=on-failure
+        RestartSec=30s
         User=grafana
         Group=grafana
+
         ExecStartPre=-/usr/bin/docker stop grafana
         ExecStartPre=-/usr/bin/docker rm grafana
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/management/grafana-enterprise:latest

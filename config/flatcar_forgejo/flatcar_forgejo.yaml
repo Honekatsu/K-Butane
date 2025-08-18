@@ -32,6 +32,7 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=forgejo
         Group=forgejo
+        
         ExecStartPre=-/usr/bin/docker stop forgejo
         ExecStartPre=-/usr/bin/docker rm forgejo
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/others/forgejo:10
@@ -61,6 +62,7 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=postgres
         Group=postgres
+
         ExecStartPre=-/usr/bin/docker stop postgres-forgejo
         ExecStartPre=-/usr/bin/docker rm postgres-forgejo
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres
@@ -69,6 +71,7 @@ systemd:
           -p 5432:5432\
           --env-file /home/flatcar/.postgres-forgejo/.env\
           harbor.reyokatsu.net/database/postgres:latest
+
         [Install]
         WantedBy=multi-user.target
     - name: minio-forgejo.service
@@ -86,6 +89,7 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=minio
         Group=minio
+
         ExecStartPre=-/usr/bin/docker stop minio-forgejo
         ExecStartPre=-/usr/bin/docker rm minio-forgejo
         ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
@@ -107,10 +111,12 @@ systemd:
 
         [Service]
         Type=simple
-        RemainAfterExit=true
+        Restart=always
+        RestartSec=10
         WorkingDirectory=/home/flatcar
         User=lldap
         Group=lldap
+
         ExecStartPre=-/usr/bin/docker stop lldap-forgejo
         ExecStartPre=-/usr/bin/docker rm lldap-forgejo
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/auth/lldap:stable
@@ -120,8 +126,10 @@ systemd:
           -v /home/flatcar/.lldap-forgejo/data:/data\
           --env-file /home/flatcar/.lldap-forgejo/.env\
           harbor.reyokatsu.net/auth/lldap:stable
+        
         [Install]
         WantedBy=multi-user.target
+
 storage:
   directories:
     - path: /home/flatcar/.forgejo/data
