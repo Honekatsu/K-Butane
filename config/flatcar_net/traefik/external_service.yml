@@ -30,6 +30,14 @@ http:
       tls:
         certResolver: cloudflare
 
+    netbox:
+      entryPoints:
+        - web-sec
+      rule: Host(`netbox.reyokatsu.net`)
+      service: netbox
+      tls:
+        certResolver: cloudflare
+
     git-peach:
       entryPoints:
         - web-sec
@@ -47,6 +55,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://172.20.5.15:9001"
+    netbox:
+      loadBalancer:
+        servers:
+          - url: "http://172.20.5.14:8000"
     git-peach:
       loadBalancer:
         servers:

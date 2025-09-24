@@ -24,6 +24,8 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=always
+        RestartSec=600
         User=coredns
         Group=coredns
         ExecStartPre=-/usr/bin/docker stop coredns
@@ -46,6 +48,8 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=always
+        RestartSec=600
         User=traefik
         Group=traefik
         ExecStartPre=-/usr/bin/docker stop traefik
@@ -73,6 +77,8 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=always
+        RestartSec=10
         User=haproxy
         Group=haproxy
         ExecStartPre=-/usr/bin/docker stop haproxy
@@ -123,7 +129,7 @@ storage:
       user: { name: traefik }
       group: { name: traefik }
       mode: 0600
-      contents: 
+      contents:
         inline: |
           CF_API_EMAIL=
           CF_DNS_API_TOKEN=
