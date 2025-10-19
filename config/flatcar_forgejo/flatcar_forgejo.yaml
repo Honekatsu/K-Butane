@@ -32,7 +32,7 @@ systemd:
         WorkingDirectory=/home/flatcar
         User=forgejo
         Group=forgejo
-        
+
         ExecStartPre=-/usr/bin/docker stop forgejo
         ExecStartPre=-/usr/bin/docker rm forgejo
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/others/forgejo:10
@@ -70,7 +70,7 @@ systemd:
           -v /home/flatcar/.postgres-forgejo/data:/var/lib/postgresql/data\
           -p 5432:5432\
           --env-file /home/flatcar/.postgres-forgejo/.env\
-          harbor.reyokatsu.net/database/postgres:latest
+          harbor.reyokatsu.net/database/postgres:17
 
         [Install]
         WantedBy=multi-user.target
@@ -126,7 +126,7 @@ systemd:
           -v /home/flatcar/.lldap-forgejo/data:/data\
           --env-file /home/flatcar/.lldap-forgejo/.env\
           harbor.reyokatsu.net/auth/lldap:stable
-        
+
         [Install]
         WantedBy=multi-user.target
 
