@@ -65,7 +65,7 @@ systemd:
 
         ExecStartPre=-/usr/bin/docker stop postgres-forgejo
         ExecStartPre=-/usr/bin/docker rm postgres-forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres
+        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres:17
         ExecStart=/usr/bin/docker run --rm --name postgres-forgejo\
           -v /home/flatcar/.postgres-forgejo/data:/var/lib/postgresql/data\
           -p 5432:5432\
