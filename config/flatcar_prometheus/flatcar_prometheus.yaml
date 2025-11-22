@@ -78,13 +78,13 @@ systemd:
 
         ExecStartPre=-/usr/bin/docker stop prometheus
         ExecStartPre=-/usr/bin/docker rm prometheus
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/management/prometheus:latest
+        ExecStartPre=/usr/bin/docker pull prom/prometheus:latest
         ExecStartPre=-/usr/bin/sh /home/flatcar/.prometheus/create_config.sh
         ExecStart=/usr/bin/docker run --name prometheus\
          -p 9090:9090\
          -v /home/flatcar/.prometheus/config:/config\
          -v /home/flatcar/.prometheus/data:/prometheus\
-         harbor.reyokatsu.net/management/prometheus:latest\
+         prom/prometheus:latest\
          --config.file=/config/prometheus.yml
         [Install]
         WantedBy=multi-user.target
@@ -106,11 +106,11 @@ systemd:
 
         ExecStartPre=-/usr/bin/docker stop grafana
         ExecStartPre=-/usr/bin/docker rm grafana
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/management/grafana-enterprise:latest
+        ExecStartPre=/usr/bin/docker pull grafana/grafana-enterprise:latest
         ExecStart=/usr/bin/docker run --name grafana\
           -p 3000:3000\
           -v /home/flatcar/.grafana/data:/var/lib/grafana\
-          harbor.reyokatsu.net/management/grafana-enterprise:latest
+          grafana/grafana-enterprise:latest
         [Install]
         WantedBy=multi-user.target
 
