@@ -29,13 +29,14 @@ systemd:
         Type=simple
         Restart=always
         RestartSec=10
+        TimeoutStartSec=10min
         WorkingDirectory=/home/flatcar
         User=forgejo
         Group=forgejo
 
+        ExecStartPre=-/usr/bin/docker pull harbor.reyokatsu.net/others/forgejo:10
         ExecStartPre=-/usr/bin/docker stop forgejo
         ExecStartPre=-/usr/bin/docker rm forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/others/forgejo:10
         ExecStart=/usr/bin/docker run --rm --name forgejo\
           -v /home/flatcar/.forgejo/data:/data\
           -v /etc/timezone:/etc/timeozone:ro\
@@ -59,13 +60,14 @@ systemd:
         Type=simple
         Restart=always
         RestartSec=10
+        TimeoutStartSec=10min
         WorkingDirectory=/home/flatcar
         User=postgres
         Group=postgres
 
+        ExecStartPre=-/usr/bin/docker pull harbor.reyokatsu.net/database/postgres:17
         ExecStartPre=-/usr/bin/docker stop postgres-forgejo
         ExecStartPre=-/usr/bin/docker rm postgres-forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/database/postgres:17
         ExecStart=/usr/bin/docker run --rm --name postgres-forgejo\
           -v /home/flatcar/.postgres-forgejo/data:/var/lib/postgresql/data\
           -p 5432:5432\
@@ -86,13 +88,14 @@ systemd:
         Type=simple
         Restart=always
         RestartSec=10
+        TimeoutStartSec=10min
         WorkingDirectory=/home/flatcar
         User=minio
         Group=minio
 
+        ExecStartPre=-/usr/bin/docker pull quay.io/minio/minio
         ExecStartPre=-/usr/bin/docker stop minio-forgejo
         ExecStartPre=-/usr/bin/docker rm minio-forgejo
-        ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
         ExecStart=/usr/bin/docker run --name minio-forgejo\
           -p 9000:9000 -p 9001:9001\
           -v /home/flatcar/.minio-forgejo/data:/data\
@@ -113,13 +116,14 @@ systemd:
         Type=simple
         Restart=always
         RestartSec=10
+        TimeoutStartSec=10min
         WorkingDirectory=/home/flatcar
         User=lldap
         Group=lldap
 
+        ExecStartPre=-/usr/bin/docker pull harbor.reyokatsu.net/auth/lldap:stable
         ExecStartPre=-/usr/bin/docker stop lldap-forgejo
         ExecStartPre=-/usr/bin/docker rm lldap-forgejo
-        ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/auth/lldap:stable
         ExecStart=/usr/bin/docker run --name lldap-forgejo\
           -p 3890:3890\
           -p 17170:17170\

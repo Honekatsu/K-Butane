@@ -77,9 +77,12 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=always
+        RestartSec=30s
+        TimeoutStartSec=10min
+        ExecStartPre=-/usr/bin/docker pull prom/node-exporter
         ExecStartPre=-/usr/bin/docker stop node_exporter
         ExecStartPre=-/usr/bin/docker rm node_exporter
-        ExecStartPre=/usr/bin/docker pull prom/node-exporter
         ExecStart=/usr/bin/docker run --rm --name node_exp\
           -p 9100:9100\
           --pid=host\
@@ -98,9 +101,12 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=always
+        RestartSec=30s
+        TimeoutStartSec=10min
+        ExecStartPre=-/usr/bin/docker pull grafana/alloy:latest
         ExecStartPre=-/usr/bin/docker stop alloy
         ExecStartPre=-/usr/bin/docker rm alloy
-        ExecStartPre=/usr/bin/docker pull grafana/alloy:latest
         ExecStart=/usr/bin/docker run --rm --name alloy -v /home/flatcar/.alloy/config.alloy:/etc/alloy/config.alloy -p 12345:12345 grafana/alloy:latest run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
 
         [Install]

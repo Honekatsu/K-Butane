@@ -24,11 +24,15 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=on-failure
+        RestartSec=30s
+        TimeoutStartSec=10min
         User=loki
         Group=loki
+
+        ExecStartPre=-/usr/bin/docker pull quay.io/minio/minio
         ExecStartPre=-/usr/bin/docker stop minio_loki
         ExecStartPre=-/usr/bin/docker rm minio_loki
-        ExecStartPre=/usr/bin/docker pull quay.io/minio/minio
         ExecStart=/usr/bin/docker run --name minio_loki\
          --env-file /home/flatcar/.loki/minio_loki/.env\
          -p 9000:9000 -p 9001:9001\
@@ -47,11 +51,16 @@ systemd:
 
         [Service]
         Type=simple
+        Restart=on-failure
+        RestartSec=30s
+
+        TimeoutStartSec=10min
         User=loki
         Group=loki
+
+        ExecStartPre=-/usr/bin/docker pull grafana/loki
         ExecStartPre=-/usr/bin/docker stop loki
         ExecStartPre=-/usr/bin/docker rm loki
-        ExecStartPre=/usr/bin/docker pull grafana/loki
         ExecStart=/usr/bin/docker run --name loki\
          --env-file /home/flatcar/.loki/minio_loki/.env\
          -p 3100:3100\
@@ -73,12 +82,13 @@ systemd:
         WorkingDirectory=/home/flatcar
         Restart=on-failure
         RestartSec=30s
+        TimeoutStartSec=10min
         User=prometheus
         Group=prometheus
 
+        ExecStartPre=-/usr/bin/docker pull prom/prometheus:latest
         ExecStartPre=-/usr/bin/docker stop prometheus
         ExecStartPre=-/usr/bin/docker rm prometheus
-        ExecStartPre=/usr/bin/docker pull prom/prometheus:latest
         ExecStartPre=-/usr/bin/sh /home/flatcar/.prometheus/create_config.sh
         ExecStart=/usr/bin/docker run --name prometheus\
          -p 9090:9090\
@@ -101,6 +111,7 @@ systemd:
         WorkingDirectory=/home/flatcar
         Restart=on-failure
         RestartSec=30s
+        TimeoutStartSec=10min
         User=grafana
         Group=grafana
 

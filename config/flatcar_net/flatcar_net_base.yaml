@@ -25,9 +25,11 @@ systemd:
         [Service]
         Type=simple
         Restart=always
-        RestartSec=600
+        RestartSec=1min
+        TimeoutStartSec=10min
         User=coredns
         Group=coredns
+
         ExecStartPre=-/usr/bin/docker stop coredns
         ExecStartPre=-/usr/bin/docker rm coredns
         ExecStartPre=/usr/bin/docker pull coredns/coredns:latest
@@ -49,9 +51,11 @@ systemd:
         [Service]
         Type=simple
         Restart=always
-        RestartSec=600
+        RestartSec=1min
+        TimeoutStartSec=10min
         User=traefik
         Group=traefik
+
         ExecStartPre=-/usr/bin/docker stop traefik
         ExecStartPre=-/usr/bin/docker rm traefik
         ExecStartPre=/usr/bin/docker pull traefik:latest
@@ -79,8 +83,10 @@ systemd:
         Type=simple
         Restart=always
         RestartSec=10
+        TimeoutStartSec=10min
         User=haproxy
         Group=haproxy
+
         ExecStartPre=-/usr/bin/docker stop haproxy
         ExecStartPre=-/usr/bin/docker rm haproxy
         ExecStartPre=/usr/bin/docker pull harbor.reyokatsu.net/network/haproxy:3.2-dev7-alpine
