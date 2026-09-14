@@ -17,6 +17,8 @@ metrics:
 entryPoints:
   web:
     address: :80
+  forgejo-ssh:
+    address: :222
   web-sec:
     address: :443
   web-sec-private:

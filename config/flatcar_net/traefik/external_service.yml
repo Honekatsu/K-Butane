@@ -63,3 +63,17 @@ http:
       loadBalancer:
         servers:
           - url: "http://172.20.20.1:3000"
+
+tcp:
+  routers:
+    forgejo-ssh:
+      entryPoints:
+        - forgejo-ssh
+      rule: "HostSNI(`*`)"
+      service: forgejo-ssh
+
+  services:
+    forgejo-ssh:
+      loadBalancer:
+        servers:
+          - address: "172.20.20.1:222"
