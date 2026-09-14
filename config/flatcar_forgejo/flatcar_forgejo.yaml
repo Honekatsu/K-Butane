@@ -34,7 +34,7 @@ systemd:
         User=forgejo
         Group=forgejo
 
-        ExecStartPre=-/usr/bin/docker pull harbor.reyokatsu.net/others/forgejo:10
+        ExecStartPre=-/usr/bin/docker pull codeberg.org/forgejo/forgejo:15
         ExecStartPre=-/usr/bin/docker stop forgejo
         ExecStartPre=-/usr/bin/docker rm forgejo
         ExecStart=/usr/bin/docker run --rm --name forgejo\
@@ -44,7 +44,7 @@ systemd:
           -p 3000:3000\
           -p 222:22\
           --env-file /home/flatcar/.forgejo/.env\
-          harbor.reyokatsu.net/others/forgejo:10
+          codeberg.org/forgejo/forgejo:15
 
         [Install]
         WantedBy=multi-user.target
