@@ -32,8 +32,8 @@ systemd:
         ExecStartPre=/usr/bin/docker pull git.reyokatsu.net/reyokatsu/containers/llm-wiki:latest
         ExecStart=/usr/bin/docker run --rm --name llm-wiki-engine \
           -p 172.20.20.10:18765:18765 \
-          -v /home/flatcar/llm-wiki-engine:/root/llm-wiki \
-          -v /home/flatcar/llm-wiki-engine/wikis:/root/wikis \
+          -v /home/flatcar/llm-wiki-engine:/data \
+          -v /home/flatcar/llm-wiki-engine/config:/config \
           git.reyokatsu.net/reyokatsu/containers/llm-wiki:latest serve --http :18765
         ExecStop=/usr/bin/docker stop llm-wiki-engine
 
@@ -46,6 +46,10 @@ storage:
       user: { name: llm-wiki }
       group: { name: llm-wiki }
     - path: /home/flatcar/llm-wiki-engine/wikis
+      mode: 0700
+      user: { name: llm-wiki }
+      group: { name: llm-wiki }
+    - path: /home/flatcar/llm-wiki-engine/config
       mode: 0700
       user: { name: llm-wiki }
       group: { name: llm-wiki }

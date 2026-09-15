@@ -41,9 +41,8 @@ make out/flatcar_harbor.json
 make out/flatcar_forgejo.json
 ```
 
-### flatcar-llm-wiki-engine (llm-wiki HTTP MCP server)
+### flatcar_llm_wiki (llm-wiki HTTP MCP server)
 
 ```bash
-make out/flatcar-llm-wiki-engine.json
+make out/flatcar_llm_wiki.json
 ```
-
