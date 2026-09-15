@@ -1,7 +1,7 @@
 BUTANE_CMD = docker run -i --rm -v "${PWD}":/pwd quay.io/coreos/butane:release --files-dir /pwd
 
 #targets
-all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flatcar_net_base.json out/flatcar_net01.json out/flatcar_net02.json out/flatcar_forgejo.json out/flatcar_db01.json out/flatcar_harbor.json
+all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flatcar_net_base.json out/flatcar_net01.json out/flatcar_net02.json out/flatcar_forgejo.json out/flatcar_db01.json out/flatcar_harbor.json out/flatcar-llm-wiki-engine.json
 
 clean:
 	rm -f out/*.json
@@ -57,5 +57,11 @@ out/flatcar_db01.json : $(FC_db01_path)/flatcar_db01.yaml $(FC_base_out) $(FC_db
 # Flatcar harbor
 FC_harbor_path = config/flatcar_harbor
 out/flatcar_harbor.json : $(FC_harbor_path)/flatcar_harbor.yaml $(FC_base_out) $(FC_harbor_path)/harbor.yml
+	$(BUTANE_CMD) < $< > $@
+	@echo "✅ create $@"
+
+# Flatcar llm-wiki engine
+FC_llm_wiki_path = config/flatcar-llm-wiki-engine
+out/flatcar-llm-wiki-engine.json : $(FC_llm_wiki_path)/flatcar-llm-wiki-engine.yaml $(FC_base_out)
 	$(BUTANE_CMD) < $< > $@
 	@echo "✅ create $@"

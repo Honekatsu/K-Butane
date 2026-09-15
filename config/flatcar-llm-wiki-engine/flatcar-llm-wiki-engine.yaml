@@ -1,0 +1,65 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: out/flatcar_base.json
+
+passwd:
+  users:
+    - name: llm-wiki
+      groups: [docker]
+
+systemd:
+  units:
+    - name: llm-wiki-engine.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Run llm-wiki engine MCP server
+        Requires=docker.service
+        After=docker.service network-online.target
+        Wants=network-online.target
+
+        [Service]
+        Type=simple
+        Restart=always
+        RestartSec=10s
+        TimeoutStartSec=10min
+
+        ExecStartPre=-/usr/bin/docker stop llm-wiki-engine
+        ExecStartPre=-/usr/bin/docker rm llm-wiki-engine
+        ExecStartPre=/usr/bin/docker pull git.reyokatsu.net/reyokatsu/containers/llm-wiki:latest
+        ExecStart=/usr/bin/docker run --rm --name llm-wiki-engine \
+          -p 172.20.20.10:18765:18765 \
+          -v /home/flatcar/llm-wiki-engine:/root/llm-wiki \
+          -v /home/flatcar/llm-wiki-engine/wikis:/root/wikis \
+          git.reyokatsu.net/reyokatsu/containers/llm-wiki:latest serve --http :18765
+        ExecStop=/usr/bin/docker stop llm-wiki-engine
+
+        [Install]
+        WantedBy=multi-user.target
+
+storage:
+  directories:
+    - path: /home/flatcar/llm-wiki-engine
+      user: { name: llm-wiki }
+      group: { name: llm-wiki }
+    - path: /home/flatcar/llm-wiki-engine/wikis
+      mode: 0700
+      user: { name: llm-wiki }
+      group: { name: llm-wiki }
+  files:
+    - path: /etc/systemd/network/static.network
+      contents:
+        inline: |
+          [Match]
+          Name=eth0
+
+          [Network]
+          Address=172.20.20.10/16
+          Gateway=172.20.0.1
+          NTP=172.20.0.1
+    - path: /etc/hostname
+      contents:
+        inline: flatcar-llm-wiki-engine

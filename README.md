@@ -40,3 +40,10 @@ make out/flatcar_harbor.json
 ```bash
 make out/flatcar_forgejo.json
 ```
+
+### flatcar-llm-wiki-engine (llm-wiki HTTP MCP server)
+
+```bash
+make out/flatcar-llm-wiki-engine.json
+```
+
