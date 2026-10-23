@@ -10,21 +10,6 @@ systemd:
   units:
     - name: docker.service
       enabled: true
-    - name: restart-systemd-networkd.service
-      enabled: true
-      contents: |
-        [Unit]
-        Description=Restart systemd-networkd
-        After=network-online.target
-        Wants=network-online.target
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=true
-        ExecStart=/bin/systemctl restart systemd-networkd
-
-        [Install]
-        WantedBy=multi-user.target
     - name: docker-prune.service
       enabled: false
       contents: |
@@ -83,11 +68,11 @@ systemd:
         ExecStartPre=-/usr/bin/docker pull prom/node-exporter
         ExecStartPre=-/usr/bin/docker stop node_exporter
         ExecStartPre=-/usr/bin/docker rm node_exporter
-        ExecStart=/usr/bin/docker run --rm --name node_exp\
-          -p 9100:9100\
+        ExecStart=/usr/bin/docker run --rm --name node_exporter\
+          --network=host\
           --pid=host\
           -v /:/host:ro,rslave\
-          prom/node-exporter
+          prom/node-exporter --path.rootfs=/host
 
         [Install]
         WantedBy=multi-user.target
@@ -107,12 +92,27 @@ systemd:
         ExecStartPre=-/usr/bin/docker pull grafana/alloy:latest
         ExecStartPre=-/usr/bin/docker stop alloy
         ExecStartPre=-/usr/bin/docker rm alloy
-        ExecStart=/usr/bin/docker run --rm --name alloy -v /home/flatcar/.alloy/config.alloy:/etc/alloy/config.alloy -p 12345:12345 grafana/alloy:latest run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+        ExecStart=/usr/bin/docker run --rm --name alloy \
+          -v /home/flatcar/.alloy/config.alloy:/etc/alloy/config.alloy:ro \
+          -v /var/log/journal:/var/log/journal:ro \
+          -v /run/log/journal:/run/log/journal:ro \
+          -v /etc/machine-id:/etc/machine-id:ro \
+          -v /home/flatcar/.alloy/data:/var/lib/alloy/data \
+          -p 127.0.0.1:12345:12345 \
+          grafana/alloy:latest run \
+          --server.http.listen-addr=0.0.0.0:12345 \
+          --storage.path=/var/lib/alloy/data \
+          /etc/alloy/config.alloy
 
         [Install]
         WantedBy=multi-user.target
 
 storage:
+  directories:
+    - path: /home/flatcar/.alloy/data
+      mode: 0750
+      user: {name: flatcar}
+      group: {name: flatcar}
   links:
     - path: /etc/systemd/system/multi-user.target.wants/docker.service
       target: /usr/lib/systemd/system/docker.service
@@ -136,6 +136,11 @@ storage:
 
           loki.relabel "journal" {
             forward_to = []
+
+            rule {
+              source_labels = ["__journal__hostname"]
+              target_label  = "host"
+            }
 
             rule {
               source_labels = ["__journal__systemd_unit"]
