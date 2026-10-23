@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki のエクスポート"
+  short_description: "Wiki 全体を `llms-txt`、`llms-full`、または JSON として出力する。"
+  default_prompt: "$llm-wiki-export を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

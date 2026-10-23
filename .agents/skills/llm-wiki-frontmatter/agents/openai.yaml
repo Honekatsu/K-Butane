@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Frontmatter の規約"
+  short_description: "Wiki ページの frontmatter を型に沿って記述し、根拠と更新履歴を保つ。"
+  default_prompt: "$llm-wiki-frontmatter を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

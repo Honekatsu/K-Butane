@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: 会話の知見を定着"
+  short_description: "会話で確定した判断、発見、未解決事項を永続的な Wiki ページにする。"
+  default_prompt: "$llm-wiki-crystallize を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

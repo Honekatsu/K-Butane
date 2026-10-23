@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki の監査"
+  short_description: "リンク、孤立ページ、型、スキーマ、グラフ構造の問題を調べる。"
+  default_prompt: "$llm-wiki-lint を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

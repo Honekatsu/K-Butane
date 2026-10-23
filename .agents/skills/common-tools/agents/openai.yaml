@@ -1,0 +1,4 @@
+interface:
+  display_name: "よく使うツール"
+  short_description: "プロジェクト横断で使う定番開発ツールの選定手順"
+  default_prompt: "$common-tools を使って、この作業に適した定番ツールと確認手順を選んでください。"

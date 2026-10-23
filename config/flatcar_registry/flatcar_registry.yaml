@@ -1,0 +1,27 @@
+variant: flatcar
+version: 1.1.0
+ignition:
+  config:
+    merge:
+      - local: out/flatcar_base.json
+storage:
+  files:
+    - path: /etc/systemd/network/static.network
+      contents:
+        inline: |
+          [Match]
+          Name=eth0
+
+          [Network]
+          Address=172.20.5.4/16
+          Gateway=172.20.0.1
+          NTP=172.20.0.1
+    - path: /etc/hostname
+      overwrite: true
+      contents:
+        inline: registry.reyokatsu.net
+    - path: /home/flatcar/.coredns/config/Corefile
+      user: { name: coredns }
+      group: { name: coredns }
+      contents:
+        local: config/flatcar_net/coredns/Corefile01

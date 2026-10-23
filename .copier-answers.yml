@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: ec25ea1
+_src_path: git@github.com:Honekatsu/skills-template.git
+create_new_skill: false
+include_common_tools: true
+include_design_authority: false
+include_embedded_development_guidelines: false
+include_git_workflow: true
+include_japanese_tech_writing: true
+include_latex_writing: false
+include_llm_wiki_skills: true
+include_skill_editing_guidelines: true
+include_technical_document_writing: true
+overwrite_existing_skills: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: 型とスキーマ"
+  short_description: "Wiki の型、JSON Schema、フィールド別名、グラフエッジを確認・管理する。"
+  default_prompt: "$llm-wiki-schema を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

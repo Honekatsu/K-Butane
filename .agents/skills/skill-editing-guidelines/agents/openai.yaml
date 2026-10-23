@@ -1,0 +1,4 @@
+interface:
+  display_name: "スキル編集ガイド"
+  short_description: "スキル修正時の可搬性と保守性の確認"
+  default_prompt: "$skill-editing-guidelines を使って、スキル修正時の注意点を確認してください。"

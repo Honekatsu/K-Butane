@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: 知識グラフ"
+  short_description: "Wiki のノード、関係、部分グラフを生成して構造を調べる。"
+  default_prompt: "$llm-wiki-graph を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

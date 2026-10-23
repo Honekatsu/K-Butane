@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki の調査"
+  short_description: "Wiki を検索し、根拠ページに基づいて質問へ回答する。"
+  default_prompt: "$llm-wiki-research を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

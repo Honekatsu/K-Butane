@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: ソースの取り込み"
+  short_description: "ソースファイルを検証し、要約した Wiki ページとして取り込む。"
+  default_prompt: "$llm-wiki-ingest を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

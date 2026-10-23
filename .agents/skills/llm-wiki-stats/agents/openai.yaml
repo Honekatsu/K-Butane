@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki の健全性"
+  short_description: "ページ数、孤立、接続性、鮮度、コミュニティ、構造を評価する。"
+  default_prompt: "$llm-wiki-stats を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

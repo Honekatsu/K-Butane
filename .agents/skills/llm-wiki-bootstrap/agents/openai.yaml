@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki の初期確認"
+  short_description: "セッション開始時または Wiki の切替時に、構成、型、主要ページを把握する。"
+  default_prompt: "$llm-wiki-bootstrap を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: スキーマ移行"
+  short_description: "1.0.0 より前に作成された Wiki から、冗長な標準スキーマを安全に除去する。"
+  default_prompt: "$llm-wiki-migrate を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

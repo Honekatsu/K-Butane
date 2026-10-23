@@ -1,0 +1,4 @@
+interface:
+  display_name: "技術文書の表記"
+  short_description: "技術仕様書の信号・タイミング・表記ルール"
+  default_prompt: "$technical-document-writing を使って、仕様書中の信号・状態・タイミングの意味とMarkdown表記を読みやすく、検証可能に整理してください。"

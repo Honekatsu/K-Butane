@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki コンテンツ"
+  short_description: "Wiki ページとセクションを読取り、作成、更新、整理する。"
+  default_prompt: "$llm-wiki-content を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

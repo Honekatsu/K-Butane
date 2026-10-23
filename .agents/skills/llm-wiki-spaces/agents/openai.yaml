@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki スペース"
+  short_description: "登録済み Wiki スペースを作成、登録、確認、切替、削除する。"
+  default_prompt: "$llm-wiki-spaces を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

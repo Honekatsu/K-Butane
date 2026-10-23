@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki 設定"
+  short_description: "グローバル既定値と Wiki 単位の設定を読取り、必要な設定だけを変更する。"
+  default_prompt: "$llm-wiki-config を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"

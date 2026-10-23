@@ -1,0 +1,4 @@
+interface:
+  display_name: "llm-wiki: Wiki のレビュー"
+  short_description: "下書き、低信頼ページ、lint の検出事項を優先順位順に一件ずつ処理する。"
+  default_prompt: "$llm-wiki-review を使って、llm-wiki の MCP ツールでこの依頼を処理してください。"
