@@ -1,7 +1,7 @@
 BUTANE_CMD = docker run -i --rm -v "${PWD}":/pwd quay.io/coreos/butane:release --files-dir /pwd
 
 #targets
-all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flatcar_net_base.json out/flatcar_net01.json out/flatcar_net02.json out/flatcar_forgejo.json out/flatcar_db01.json out/flatcar_harbor.json out/flatcar_llm_wiki.json
+all: out/flatcar_base.json out/flatcar.json out/flatcar_prometheus.json out/flatcar_net_base.json out/flatcar_net01.json out/flatcar_net02.json out/flatcar_forgejo.json out/flatcar_db01.json out/flatcar_harbor.json out/flatcar_llm_wiki.json out/flatcar_vulnerability_mgmt.json
 
 clean:
 	rm -f out/*.json
@@ -65,3 +65,14 @@ FC_llm_wiki_path = config/flatcar_llm_wiki
 out/flatcar_llm_wiki.json : $(FC_llm_wiki_path)/flatcar_llm_wiki.yaml $(FC_base_out)
 	$(BUTANE_CMD) < $< > $@
 	@echo "✅ create $@"
+
+# Flatcar Vuls vulnerability management (strict conversion, atomic output)
+FC_vulnerability_path = config/flatcar_vulnerability_mgmt
+FC_vulnerability_files = $(wildcard $(FC_vulnerability_path)/deploy/*.sh) $(FC_vulnerability_path)/deploy/config.toml.template $(FC_vulnerability_path)/deploy/ssh_config $(FC_vulnerability_path)/deploy/images.lock $(filter-out %_test.go,$(wildcard $(FC_vulnerability_path)/deploy/helper/*.go)) $(FC_vulnerability_path)/deploy/helper/go.mod $(FC_vulnerability_path)/deploy/helper/go.sum $(FC_vulnerability_path)/deploy/helper/Dockerfile
+out/flatcar_vulnerability_mgmt.json: $(FC_vulnerability_path)/flatcar_vulnerability_mgmt.yaml $(FC_base_out) $(FC_vulnerability_files)
+	$(BUTANE_CMD) --strict < $< > $@.tmp && mv $@.tmp $@
+	@echo "✅ create $@"
+
+.PHONY: vulnerability-validate
+vulnerability-validate:
+	bash $(FC_vulnerability_path)/tests/validate.sh

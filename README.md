@@ -46,3 +46,12 @@ make out/flatcar_forgejo.json
 ```bash
 make out/flatcar_llm_wiki.json
 ```
+
+### Flatcar vulnerability management (Vuls / Ubuntu / Discord)
+
+```bash
+make out/flatcar_vulnerability_mgmt.json
+make vulnerability-validate
+```
+
+構築と運用は [Vuls監視基盤のREADME](config/flatcar_vulnerability_mgmt/README.md) を参照。
