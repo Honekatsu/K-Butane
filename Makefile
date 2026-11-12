@@ -68,7 +68,7 @@ out/flatcar_llm_wiki.json : $(FC_llm_wiki_path)/flatcar_llm_wiki.yaml $(FC_base_
 
 # Flatcar Vuls vulnerability management (strict conversion, atomic output)
 FC_vulnerability_path = config/flatcar_vulnerability_mgmt
-FC_vulnerability_files = $(wildcard $(FC_vulnerability_path)/deploy/*.sh) $(FC_vulnerability_path)/deploy/config.toml.template $(FC_vulnerability_path)/deploy/ssh_config $(FC_vulnerability_path)/deploy/images.lock $(filter-out %_test.go,$(wildcard $(FC_vulnerability_path)/deploy/helper/*.go)) $(FC_vulnerability_path)/deploy/helper/go.mod $(FC_vulnerability_path)/deploy/helper/go.sum $(FC_vulnerability_path)/deploy/helper/Dockerfile
+FC_vulnerability_files = $(wildcard $(FC_vulnerability_path)/deploy/*.sh) $(wildcard $(FC_vulnerability_path)/deploy/systemd/*) $(FC_vulnerability_path)/deploy/config.toml.template $(FC_vulnerability_path)/deploy/ssh_config $(FC_vulnerability_path)/deploy/images.lock $(filter-out %_test.go,$(wildcard $(FC_vulnerability_path)/deploy/helper/*.go)) $(FC_vulnerability_path)/deploy/helper/go.mod $(FC_vulnerability_path)/deploy/helper/go.sum $(FC_vulnerability_path)/deploy/helper/Dockerfile
 out/flatcar_vulnerability_mgmt.json: $(FC_vulnerability_path)/flatcar_vulnerability_mgmt.yaml $(FC_base_out) $(FC_vulnerability_files)
 	$(BUTANE_CMD) --strict < $< > $@.tmp && mv $@.tmp $@
 	@echo "✅ create $@"
